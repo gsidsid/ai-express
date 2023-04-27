@@ -31,4 +31,10 @@ if (
   }
 }
 
+if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+  envVars += `PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME=${process.env.RENDER_EXTERNAL_HOSTNAME} `;
+  process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME =
+    process.env.RENDER_EXTERNAL_HOSTNAME;
+}
+
 console.log(envVars.trim());
