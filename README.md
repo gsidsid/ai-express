@@ -1,0 +1,60 @@
+![Banner](src/assets/banner.png)
+
+A fast, lightweight way to turn AI prompts into API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
+
+![Dashboard](src/assets/dashboard.png)
+
+Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) & deploy it for free in a few minutes.
+
+<details>
+<summary> More details on how to do this</summary>
+
+1. [Sign up for MongoDB](https://www.mongodb.com/cloud/atlas/register). On the "Deploy your database" screen, select AWS, M0 – Free (or whatever level of hosting you'd like, but free really ought to be more than enough).
+
+2. Create a user profile for the new database and make a note of your database username and password. Then in the current "Quickstart" page or the "Network Access" page, add your current IP address (there should be a button for this).
+
+3. Go to "Database" in the sidebar, click the "Connect" button for the database you just created, select "Drivers", and copy the connection string URL. Note that you'll need to fill in the `<password>` part of the URL with that of the profile you created in step 2.
+
+Then click the button below and have your connection URL ready.
+
+</details>
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/gsidsid/ai-express/)
+
+## Usage
+
+This template uses a barebones Payload CMS configuration to give you a neat interface to manage prompts, updating your API dynamically whenever you publish/modify prompts using it.
+
+Every prompt document created instantly becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect in an HTTP POST request.
+
+Variable notation can be extended to include more info (`{{variableName|defaultValue|description}}`}), prompts are automatically validated for token length against the model selected in the text editor, and API documentation + a test bench are instantly updated via Swagger.
+
+The API will wait for and output the top chat completion `completion.data.choices[0].message.trim()` in a simple object of the format `{ result: <your_completion> }`. If there was an error of any kind, you will receive `{ result: null, error: <error_message> }`.
+
+## Development
+
+1. Ensure MongoDB is installed locally – Instructions: [Mac](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/), [Windows](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). Don't forget to start it using `brew services start mongodb-community@6.0` or equivalent.
+
+2. Rename the `.sample.env` file to `.env`, adding your Open AI API key, and updating `AIEXPRESS_API_KEY` with a new random value.
+
+3. `yarn` and `yarn dev` will then start the application and reload on any changes.
+
+### Docker
+
+If you have docker and docker-compose installed, you can run `docker-compose up`
+
+To build the docker image, run `docker build -t my-tag .`
+
+Ensure you are passing all needed environment variables when starting up your container via `--env-file` or setting them with your deployment.
+
+The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_CONFIG_PATH`
+
+`docker run --env-file .env -p 3000:3000 my-tag`
+
+## Future
+
+- Could also fairly easily create our own plugin interface to let folks throw in stuff like redaction, rate limiting, API request, and output format validation middleware. Ideally entirely configurable through the CMS.
+- The CMS has a form building plugin that could let folks put together end-user apps.
+- Because we have an index of prompts and descriptions on them, simple langchain-like features might be easy to let users assemble.
+
+Contributions are welcome.

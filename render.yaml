@@ -1,0 +1,24 @@
+services:
+  # Node.js web service
+  - type: web
+    plan: free
+    name: ai-express
+    env: node
+    buildCommand: yarn build
+    startCommand: yarn serve
+    envVars:
+      - key: AIEXPRESS_API_KEY
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+        generateValue: false
+      - key: OPENAI_API_KEY
+        sync: false
+        generateValue: false
+      - key: PORT
+        value: 3000
+      - key: RENDER_EXTERNAL_HOSTNAME
+        fromService:
+          name: ai-express
+          type: web
+          property: host
