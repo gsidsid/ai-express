@@ -22,6 +22,10 @@ interface SwaggerSpec {
   security: { apiKeyHeader: any[] }[];
 }
 
+const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
+  ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
+  : "http://localhost:3000";
+
 /**
  * Infers variables from a text prompt in the format {{variableName}}, with optional description and default value.
  * The description and default value can be added in the format {{variableName|defaultValue|description}}.
@@ -128,9 +132,7 @@ const generateSwaggerSpec = (prompts: Prompt[]): SwaggerSpec => {
       return acc;
     }, {});
 
-    const endpointName = `${
-      process.env.PAYLOAD_PUBLIC_SERVER_URL
-    }/api/${getRouteName(prompt.name)}`;
+    const endpointName = `${serverURL}/api/${getRouteName(prompt.name)}`;
     const schemaName = `${prompt.name} Request Body`;
 
     paths[endpointName] = {
@@ -202,7 +204,7 @@ const generateSwaggerSpec = (prompts: Prompt[]): SwaggerSpec => {
       description: "An API for generating text from various prompts.",
     },
     basePath: "",
-    schemes: [process.env.PAYLOAD_PUBLIC_SERVER_URL?.split(":")[0] || "http"],
+    schemes: [serverURL.split(":")[0] || "http"],
     securityDefinitions: {
       apiKeyHeader: {
         type: "apiKey",

@@ -7,8 +7,10 @@ import "../styles/app.css";
 
 if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
   throw new Error(
-    "AI Express API key not set. Please set the AIEXPRESS_API_KEY environment variable and ensure it is being forwarded to the client as PAYLOAD_PUBLIC_AIEXPRESS_API_KEY."
+    "AI Express API key not found. Please set the PAYLOAD_PUBLIC_AIEXPRESS_API_KEY environment variable."
   );
+
+const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 
 const Docs = () => {
   const [prompts, setPrompts] = useState(null);
@@ -28,8 +30,7 @@ const Docs = () => {
         displayRequestDuration={true}
         spec={generateSwaggerSpec(prompts)}
         requestInterceptor={(req) => {
-          req.headers["x-api-key"] =
-            process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
+          req.headers["x-api-key"] = apiKey;
           return req;
         }}
       />

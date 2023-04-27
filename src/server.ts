@@ -21,7 +21,6 @@ const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
   ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";
 
-process.env.PAYLOAD_PUBLIC_SERVER_URL = serverURL;
 process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
 
 app.get("/", (_, res) => {
