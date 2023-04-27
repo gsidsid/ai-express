@@ -11,6 +11,7 @@ if (fs.existsSync(envFilePath)) {
 
   if (apiKeyMatch && apiKeyMatch[1]) {
     envVars += `PAYLOAD_PUBLIC_AIEXPRESS_API_KEY=${apiKeyMatch[1]} `;
+    envVars += `AIEXPRESS_API_KEY=${apiKeyMatch[1]} `;
   }
 }
 

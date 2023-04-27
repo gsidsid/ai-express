@@ -2,7 +2,7 @@
 
 ---
 
-A fast, lightweight way to turn AI prompts into API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
+A fast, lightweight way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
@@ -13,7 +13,7 @@ Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/clo
 
 1. [Sign up for MongoDB](https://www.mongodb.com/cloud/atlas/register). On the "Deploy your database" screen, select AWS, M0 – Free (or whatever level of hosting you'd like, but free really ought to be more than enough).
 
-2. Create a user profile for the new database and make a note of your database username and password. Then in the current "Quickstart" page or the "Network Access" page, add your current IP address (there should be a button for this).
+2. Create a user profile for the new database and make a note of your database username and password. Then from the "Network Access" page, click "Add IP Address" then "Allow access from anywhere". You can easily configure this later to include only the IP addresses of your Render deployment for extra security.
 
 3. Go to "Database" in the sidebar, click the "Connect" button for the database you just created, select "Drivers", and copy the connection string URL. Note that you'll need to fill in the `<password>` part of the URL with that of the profile you created in step 2.
 

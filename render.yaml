@@ -7,7 +7,7 @@ services:
     buildCommand: yarn && yarn build
     startCommand: yarn serve
     envVars:
-      - key: AIEXPRESS_API_KEY
+      - key: PAYLOAD_PUBLIC_AIEXPRESS_API_KEY
         generateValue: true
       - key: MONGODB_URI
         sync: false
