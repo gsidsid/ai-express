@@ -1,10 +1,10 @@
-![Banner](src/assets/banner.png)
+![Banner](src/assets/readme-banner.png)
 
 ---
 
 A fast, lightweight way to turn AI prompts into API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
-![Dashboard](src/assets/dashboard.png)
+![Dashboard](src/assets/readme-dashboard.png)
 
 Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) & deploy it for free in a few minutes.
 
