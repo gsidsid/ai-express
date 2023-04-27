@@ -5,6 +5,11 @@ import { generateSwaggerSpec } from "../util";
 import "swagger-ui-react/swagger-ui.css";
 import "../styles/app.css";
 
+if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
+  throw new Error(
+    "AI Express API key not set. Please set the AIEXPRESS_API_KEY environment variable and ensure it is being forwarded to the client as PAYLOAD_PUBLIC_AIEXPRESS_API_KEY."
+  );
+
 const Docs = () => {
   const [prompts, setPrompts] = useState(null);
   useEffect(() => {

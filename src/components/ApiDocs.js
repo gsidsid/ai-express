@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { lazy, Suspense } from "react";
 
+if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
+  throw new Error(
+    "AI Express API key not set. Please set the AIEXPRESS_API_KEY environment variable and ensure it is being forwarded to the client as PAYLOAD_PUBLIC_AIEXPRESS_API_KEY."
+  );
+
 const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 
 const ApiDocs = () => {
@@ -21,7 +26,7 @@ const ApiDocs = () => {
         <h2 style={{ marginTop: "1rem", marginBottom: "0.25rem" }}>Your API</h2>
         <p>
           {apiKey
-            ? "All requests to prompt-based endpoints must include an x-api-key header matching your AIEXPRESS_API_KEY environment variable (provided below)."
+            ? "All requests to prompt-based endpoints must include an x-api-key header matching your AIEXPRESS_API_KEY environment variable (copy below)."
             : "AIEXPRESS_API_KEY is not set as an environment variable. Anyone can access your API."}
         </p>
         <button

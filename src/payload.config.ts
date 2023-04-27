@@ -7,12 +7,12 @@ import ApiDocs from "./components/ApiDocs.js";
 import { Logo, Icon } from "./components/Graphics";
 // import formBuilder from "@payloadcms/plugin-form-builder";
 
+const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
+  ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
+  : "http://localhost:3000";
+
 export default buildConfig({
-  serverURL: `${
-    process.env.RENDER_EXTERNAL_HOSTNAME
-      ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
-      : "http://localhost:3000"
-  }`,
+  serverURL,
   collections: [Prompts, Roles, Users],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),

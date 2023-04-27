@@ -130,7 +130,7 @@ const generateSwaggerSpec = (prompts: Prompt[]): SwaggerSpec => {
 
     const endpointName = `${
       process.env.PAYLOAD_PUBLIC_SERVER_URL
-    }/api/${prompt.name.toLowerCase().replaceAll(" ", "-")}`;
+    }/api/${getRouteName(prompt.name)}`;
     const schemaName = `${prompt.name} Request Body`;
 
     paths[endpointName] = {
@@ -217,10 +217,21 @@ const generateSwaggerSpec = (prompts: Prompt[]): SwaggerSpec => {
   };
 };
 
+const countTokens = (str: string) => {
+  // https://platform.openai.com/tokenizer
+  return parseInt((str.split(" ").length * (4 / 3)).toString());
+};
+
+const getRouteName = (name: string) => {
+  return name.toLowerCase().replaceAll(" ", "-");
+};
+
 export {
   inferVariablesFromPrompt,
   stringify,
   isRole,
   apiKeyMiddleware,
   generateSwaggerSpec,
+  getRouteName,
+  countTokens,
 };

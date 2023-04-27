@@ -1,7 +1,10 @@
 import { CollectionConfig } from "payload/types";
 
-const count = (str: string) => {
-  // Roughly estimate the number of OpenAI tokens in a string
+const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
+  ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
+  : "http://localhost:3000";
+
+const countTokens = (str: string) => {
   // https://platform.openai.com/tokenizer
   return parseInt((str.split(" ").length * (4 / 3)).toString());
 };
@@ -13,7 +16,10 @@ const Prompts: CollectionConfig = {
     description:
       "Build new API endpoints by adding prompt templates to this collection.",
     disableDuplicate: true,
-    defaultColumns: ["name", "description", "prompt"],
+    defaultColumns: ["name", "description", "model", "createdAt"],
+    pagination: {
+      defaultLimit: 100,
+    },
   },
   fields: [
     {
@@ -42,11 +48,9 @@ const Prompts: CollectionConfig = {
         description: ({ value }) =>
           `${
             typeof value === "string"
-              ? `POST ${
-                  process.env.RENDER_EXTERNAL_HOSTNAME
-                    ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
-                    : "http://localhost:3000"
-                }/api/${value.toLowerCase().replaceAll(" ", "-")}`
+              ? `POST ${serverURL}/api/${value
+                  .toLowerCase()
+                  .replaceAll(" ", "-")}`
               : "Required"
           }`,
       },
@@ -97,22 +101,22 @@ const Prompts: CollectionConfig = {
         if (data.model) {
           switch (data.model) {
             case "gpt-3.5-turbo":
-              if (count(value) > 4096) {
-                return `Prompt exceeds maximum token length of 4096 tokens (currently ${count(
+              if (countTokens(value) > 4096) {
+                return `Prompt exceeds maximum token length of 4096 tokens (currently ${countTokens(
                   value
                 )} tokens).`;
               }
               break;
             case "gpt-4":
-              if (count(value) > 8192) {
-                return `Prompt exceeds maximum token length of 8192 tokens (currently ${count(
+              if (countTokens(value) > 8192) {
+                return `Prompt exceeds maximum token length of 8192 tokens (currently ${countTokens(
                   value
                 )} tokens).`;
               }
               break;
             case "gpt-4-32k":
-              if (count(value) > 32768) {
-                return `Prompt exceeds maximum token length of 32768 tokens. (currently ${count(
+              if (countTokens(value) > 32768) {
+                return `Prompt exceeds maximum token length of 32768 tokens. (currently ${countTokens(
                   value
                 )} tokens).`;
               }
@@ -126,16 +130,9 @@ const Prompts: CollectionConfig = {
   hooks: {
     afterChange: [
       ({ doc }) => {
-        fetch(
-          `${
-            process.env.RENDER_EXTERNAL_HOSTNAME
-              ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
-              : "http://localhost:3000"
-          }/api/update-routes`,
-          {
-            method: "POST",
-          }
-        );
+        fetch(`${serverURL}/api/update-routes`, {
+          method: "POST",
+        });
         return doc;
       },
     ],
