@@ -2,7 +2,6 @@ import { buildConfig } from "payload/config";
 import path from "path";
 import Prompts from "./collections/Prompts";
 import Roles from "./collections/Roles";
-import Users from "./collections/Users";
 import ApiDocs from "./components/ApiDocs.js";
 import { Logo, Icon } from "./components/Graphics";
 // import formBuilder from "@payloadcms/plugin-form-builder";
@@ -13,7 +12,7 @@ const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
 
 export default buildConfig({
   serverURL,
-  collections: [Prompts, Roles, Users],
+  collections: [Prompts, Roles],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
@@ -26,7 +25,6 @@ export default buildConfig({
     admin: "/admin",
   },
   admin: {
-    user: Users.slug,
     components: {
       graphics: {
         Logo,
