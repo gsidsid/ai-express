@@ -6,7 +6,7 @@ A fast, lightweight way to turn AI prompts into API endpoints– deploy with a f
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
-Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) & deploy it for free in a few minutes.
+Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes.
 
 <details>
 <summary> More details on how to do this</summary>
