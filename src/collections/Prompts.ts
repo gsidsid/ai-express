@@ -1,13 +1,9 @@
 import { CollectionConfig } from "payload/types";
+import { countTokens, getRouteName } from "../util";
 
 const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
   ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";
-
-const countTokens = (str: string) => {
-  // https://platform.openai.com/tokenizer
-  return parseInt((str.split(" ").length * (4 / 3)).toString());
-};
 
 const Prompts: CollectionConfig = {
   slug: "prompts",
@@ -48,9 +44,7 @@ const Prompts: CollectionConfig = {
         description: ({ value }) =>
           `${
             typeof value === "string"
-              ? `POST ${serverURL}/api/${value
-                  .toLowerCase()
-                  .replaceAll(" ", "-")}`
+              ? `POST ${serverURL}/api/${getRouteName(value)}`
               : "Required"
           }`,
       },
