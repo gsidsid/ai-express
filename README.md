@@ -25,11 +25,11 @@ Then click the button below and have your connection URL ready.
 
 ## Usage
 
-This template uses a barebones Payload CMS configuration to give you a neat interface to manage prompts, updating your API dynamically whenever you publish/modify prompts using it.
+This template uses a simple express server with a Payload CMS configuration to give you a neat interface to manage prompts, updating your API dynamically whenever you publish/modify prompts on it.
 
-Every prompt document created instantly becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect in an HTTP POST request.
+Every prompt document created instantly becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect and check for in an HTTP POST request.
 
-Variable notation can be extended to include more info `{{variableName|defaultValue|description}}`, prompts are automatically validated for token length against the model selected in the text editor, and API documentation + a test bench are maintained via Swagger.
+Variable notation can be extended to include more info `{{variableName|defaultValue|description}}`, prompts are automatically validated for token length against the model selected in the text editor, and API documentation + a test bench are maintained via Swagger so you can test changes to your prompts without firing up Postman.
 
 The API will wait for and output the top chat completion `completion.data.choices[0].message.trim()` in a simple JSON object of the format `{ result: <your_completion> }`. If there was an error of any kind, you will receive `{ result: null, error: <error_message> }`.
 
@@ -55,8 +55,8 @@ The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_
 
 ## Future
 
-- Fairly easy to create our own plugin interface to let folks throw in other repetitive API stuff like redaction, rate limiting, and generated output format validation middleware. Ideally all configurable just through the CMS.
-- This CMS has a form building plugin that could let folks put together end-user apps.
-- With an index of prompts and descriptions on them, basic prompt composition features should be easy to provide.
+- Plugins to let folks throw in other repetitive API stuff like redaction, rate limiting, and generated output validation middleware. Ideally all configurable just through the CMS.
+- Use Payload's form building plugin to let folks put together end-user apps.
+- A hosted service that makes setup even quicker, if there's interest.
 
 Contributions are welcome.
