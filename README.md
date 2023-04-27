@@ -1,5 +1,7 @@
 ![Banner](src/assets/banner.png)
 
+---
+
 A fast, lightweight way to turn AI prompts into API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 ![Dashboard](src/assets/dashboard.png)
@@ -27,9 +29,9 @@ This template uses a barebones Payload CMS configuration to give you a neat inte
 
 Every prompt document created instantly becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect in an HTTP POST request.
 
-Variable notation can be extended to include more info (`{{variableName|defaultValue|description}}`}), prompts are automatically validated for token length against the model selected in the text editor, and API documentation + a test bench are instantly updated via Swagger.
+Variable notation can be extended to include more info `{{variableName|defaultValue|description}}`, prompts are automatically validated for token length against the model selected in the text editor, and API documentation + a test bench are maintained via Swagger.
 
-The API will wait for and output the top chat completion `completion.data.choices[0].message.trim()` in a simple object of the format `{ result: <your_completion> }`. If there was an error of any kind, you will receive `{ result: null, error: <error_message> }`.
+The API will wait for and output the top chat completion `completion.data.choices[0].message.trim()` in a simple JSON object of the format `{ result: <your_completion> }`. If there was an error of any kind, you will receive `{ result: null, error: <error_message> }`.
 
 ## Development
 
@@ -37,7 +39,7 @@ The API will wait for and output the top chat completion `completion.data.choice
 
 2. Rename the `.sample.env` file to `.env`, adding your Open AI API key, and updating `AIEXPRESS_API_KEY` with a new random value.
 
-3. `yarn` and `yarn dev` will then start the application and reload on any changes.
+3. `yarn` and `yarn dev` will then start the application and reload on any changes. Requires Node 16+.
 
 ### Docker
 
@@ -53,8 +55,8 @@ The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_
 
 ## Future
 
-- Could also fairly easily create our own plugin interface to let folks throw in stuff like redaction, rate limiting, API request, and output format validation middleware. Ideally entirely configurable through the CMS.
-- The CMS has a form building plugin that could let folks put together end-user apps.
-- Because we have an index of prompts and descriptions on them, simple langchain-like features might be easy to let users assemble.
+- Fairly easy to create our own plugin interface to let folks throw in other repetitive API stuff like redaction, rate limiting, and generated output format validation middleware. Ideally all configurable just through the CMS.
+- This CMS has a form building plugin that could let folks put together end-user apps.
+- With an index of prompts and descriptions on them, basic prompt composition features should be easy to provide.
 
 Contributions are welcome.
