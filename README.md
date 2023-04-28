@@ -59,6 +59,7 @@ If you have docker and docker-compose installed, you can run `docker compose up`
 
 ## Future
 
+- A demo deployment + account to click around in without needing to deploy.
 - Use Payload's form building plugin to let folks put together end-user apps.
 - A hosted service that makes setup even quicker, if there's interest.
 
