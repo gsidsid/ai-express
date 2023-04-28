@@ -30,6 +30,7 @@ export default buildConfig({
     admin: "/admin",
   },
   admin: {
+    avatar: "gravatar",
     components: {
       graphics: {
         Logo,

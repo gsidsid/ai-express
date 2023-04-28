@@ -4,7 +4,7 @@
   "keywords": ["ai", "express", "server"],
   "website": "https://github.com/gsidsid/ai-express",
   "repository": "https://github.com/gsidsid/ai-express",
-  "logo": "https://raw.githubusercontent.com/gsidsid/ai-express/6de044c6520e3eb782be2f105e7082e7410da8db/src/assets/logo.svg",
+  "logo": "https://raw.githubusercontent.com/gsidsid/ai-express/101db38aa85642f27374d1e3726cfdb17d6020ae/src/assets/icon.svg",
   "success_url": "/admin",
   "env": {
     "PAYLOAD_PUBLIC_AIEXPRESS_API_KEY": {
