@@ -4,7 +4,7 @@ services:
     plan: free
     name: ai-express
     env: node
-    buildCommand: yarn
+    buildCommand: yarn install --ignore-optional
     startCommand: yarn serve
     envVars:
       - key: AIEXPRESS_API_KEY
