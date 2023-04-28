@@ -38,6 +38,7 @@
     "os": "^0.1.2",
     "os-browserify": "^0.3.0",
     "payload": "^1.7.2",
+    "react-scripts": "4.0.3",
     "redact-pii": "^3.4.0",
     "safe-eval": "^0.4.1",
     "stream-browserify": "^3.0.0",

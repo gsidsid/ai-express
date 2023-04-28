@@ -25,8 +25,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var react_2 = require("react");
-if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
-    throw new Error("AI Express API key not found. Please set the PAYLOAD_PUBLIC_AIEXPRESS_API_KEY environment variable.");
 var apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 var Docs;
 var ApiDocs = function () {
