@@ -49,7 +49,7 @@ if (!process.env.AIEXPRESS_API_KEY)
 if (!process.env.OPENAI_API_KEY)
     throw new Error("OpenAI API key not set. Please set the OPENAI_API_KEY environment variable.");
 var app = (0, express_1.default)();
-var port = process.env.PORT || 3000;
+var port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 var apiKey = process.env.AIEXPRESS_API_KEY;
 var mongoURL = process.env.MONGO_URL ||
     process.env.MONGODB_URI ||
@@ -60,6 +60,9 @@ var serverURL = process.env.EXTERNAL_HOSTNAME
 process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
 app.get("/", function (_, res) {
     res.redirect("/admin");
+});
+app.get("/health", function (_, res) {
+    res.sendStatus(200);
 });
 var start = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -93,7 +96,7 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                     });
                 }); });
                 openai_1.default.setupDynamicRoutes();
-                app.listen(port);
+                app.listen(port, "0.0.0.0", function () { });
                 return [2 /*return*/];
         }
     });

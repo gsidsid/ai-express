@@ -30,6 +30,10 @@ app.get("/", (_, res) => {
   res.redirect("/admin");
 });
 
+app.get("/health", (_, res) => {
+  res.sendStatus(200);
+});
+
 const start = async () => {
   app.use("/assets", express.static(path.resolve(__dirname, "./assets")));
   await payload.init({
