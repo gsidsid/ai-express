@@ -2,7 +2,7 @@
 
 ---
 
-A fast way to turn AI prompt completions into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
+The fastest way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
@@ -36,6 +36,8 @@ Requires $7/month for a basic instance.
 ## Usage
 
 This template uses a simple express server with a Payload CMS configuration to give you a neat interface to manage prompts, updating your API dynamically whenever you publish/modify prompts on it.
+
+![Dashboard](src/assets/readme-editor.png)
 
 Every prompt document created instantly becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect and check for in an HTTP POST request.
 
