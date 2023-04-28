@@ -23,6 +23,10 @@ Then click the button below and have your connection URL ready.
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/gsidsid/ai-express/)
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/6TOcSz)
+
 ## Usage
 
 This template uses a simple express server with a Payload CMS configuration to give you a neat interface to manage prompts, updating your API dynamically whenever you publish/modify prompts on it.

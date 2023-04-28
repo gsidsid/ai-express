@@ -1,0 +1,46 @@
+{
+  "name": "AI Express",
+  "description": "A simple express template to rapidly publish API endpoints based on prompts to Open AI models.",
+  "keywords": ["ai", "express", "server"],
+  "website": "https://github.com/gsidsid/ai-express",
+  "repository": "https://github.com/gsidsid/ai-express",
+  "logo": "https://raw.githubusercontent.com/gsidsid/ai-express/6de044c6520e3eb782be2f105e7082e7410da8db/src/assets/logo.svg",
+  "success_url": "/admin",
+  "env": {
+    "PAYLOAD_PUBLIC_AIEXPRESS_API_KEY": {
+      "description": "A unique secret key for accessing your AI Express server.",
+      "generator": "secret",
+      "required": true
+    },
+    "OPENAI_API_KEY": {
+      "description": "Your Open AI API key.",
+      "required": true
+    },
+    "MONGODB_URI": {
+      "description": "Your MongoDB connection URI with username and password.",
+      "required": true
+    },
+    "EXTERNAL_HOSTNAME": {
+      "description": "The hostname of your server– this will look like ai-express.herokuapp.com, or whatever subdomain you're choosing.",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-1x"
+    }
+  },
+  "image": "heroku/nodejs",
+  "addons": [
+    {
+      "plan": "mongolab:shared-single-small",
+      "as": "MONGO"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
