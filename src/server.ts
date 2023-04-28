@@ -19,10 +19,10 @@ const apiKey = process.env.AIEXPRESS_API_KEY;
 const mongoURL =
   process.env.MONGO_URL ||
   process.env.MONGODB_URI ||
-  "mongodb://localhost/payload";
+  "mongodb://0.0.0.0/payload";
 const serverURL = process.env.EXTERNAL_HOSTNAME
   ? `https://${process.env.EXTERNAL_HOSTNAME}`
-  : "http://localhost:3000";
+  : `http://0.0.0.0:${process.env.PORT || 3000}`;
 
 process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
 

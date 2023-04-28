@@ -27,7 +27,7 @@ dotenv_1.default.config({
 });
 var serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
     ? "https://".concat(process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME)
-    : "http://localhost:3000";
+    : "http://0.0.0.0:".concat(process.env.PAYLOAD_PUBLIC_PORT || 3000);
 exports.default = (0, config_1.buildConfig)({
     serverURL: serverURL,
     collections: [Prompts_1.default, Roles_1.default],

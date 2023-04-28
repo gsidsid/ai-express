@@ -27,9 +27,9 @@ interface SwaggerSpec {
 
 const serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
   ? `https://${process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME}`
-  : "http://localhost:3000";
+  : `http://0.0.0.0:${process.env.PAYLOAD_PUBLIC_PORT || 3000}`;
 const mongoURL =
-  process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://localhost/payload";
+  process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://0.0.0.0/payload";
 
 function getMongoDBDetails() {
   let connectionString = mongoURL;

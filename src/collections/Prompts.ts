@@ -5,7 +5,7 @@ import axios from "axios";
 
 const serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
   ? `https://${process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME}`
-  : "http://localhost:3000";
+  : `http://0.0.0.0:${process.env.PAYLOAD_PUBLIC_PORT || 3000}`;
 
 const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 

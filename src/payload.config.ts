@@ -13,7 +13,7 @@ dotenv.config({
 
 const serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
   ? `https://${process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME}`
-  : "http://localhost:3000";
+  : `http://0.0.0.0:${process.env.PAYLOAD_PUBLIC_PORT || 3000}`;
 
 export default buildConfig({
   serverURL,

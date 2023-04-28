@@ -8,7 +8,7 @@ var payload_1 = __importDefault(require("payload"));
 var axios_1 = __importDefault(require("axios"));
 var serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
     ? "https://".concat(process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME)
-    : "http://localhost:3000";
+    : "http://0.0.0.0:".concat(process.env.PAYLOAD_PUBLIC_PORT || 3000);
 var apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 var Prompts = {
     slug: "prompts",

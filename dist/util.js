@@ -45,8 +45,8 @@ var redact_pii_1 = require("redact-pii");
 var safe_eval_1 = __importDefault(require("safe-eval"));
 var serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
     ? "https://".concat(process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME)
-    : "http://localhost:3000";
-var mongoURL = process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://localhost/payload";
+    : "http://0.0.0.0:".concat(process.env.PAYLOAD_PUBLIC_PORT || 3000);
+var mongoURL = process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://0.0.0.0/payload";
 function getMongoDBDetails() {
     var connectionString = mongoURL;
     var regex = /^mongodb(?:\+srv)?:\/\/([^:]+):([^@]+)@(.+)$/;

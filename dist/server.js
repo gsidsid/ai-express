@@ -51,10 +51,12 @@ if (!process.env.OPENAI_API_KEY)
 var app = (0, express_1.default)();
 var port = process.env.PORT || 3000;
 var apiKey = process.env.AIEXPRESS_API_KEY;
-var mongoURL = process.env.MONGODB_URI || "mongodb://localhost/payload";
+var mongoURL = process.env.MONGO_URL ||
+    process.env.MONGODB_URI ||
+    "mongodb://0.0.0.0/payload";
 var serverURL = process.env.EXTERNAL_HOSTNAME
     ? "https://".concat(process.env.EXTERNAL_HOSTNAME)
-    : "http://localhost:3000";
+    : "http://0.0.0.0:".concat(process.env.PORT || 3000);
 process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
 app.get("/", function (_, res) {
     res.redirect("/admin");
