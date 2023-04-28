@@ -25,8 +25,8 @@ interface SwaggerSpec {
   security: { apiKeyHeader: any[] }[];
 }
 
-const serverURL = process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME
-  ? `https://${process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME}`
+const serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
+  ? `https://${process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";
 const mongoURL =
   process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://localhost/payload";
