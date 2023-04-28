@@ -8,16 +8,16 @@
   "success_url": "/admin",
   "env": {
     "PAYLOAD_PUBLIC_AIEXPRESS_API_KEY": {
-      "description": "A unique secret key for accessing your AI Express server.",
+      "description": "A unique secret key for accessing your AI Express server, automatically generated for you.",
       "generator": "secret",
       "required": true
     },
     "OPENAI_API_KEY": {
-      "description": "Your Open AI API key.",
+      "description": "Your Open AI API secret key.",
       "required": true
     },
     "MONGODB_URI": {
-      "description": "Your MongoDB connection URI with username and password.",
+      "description": "Your MongoDB connection URL with username and password.",
       "required": true
     },
     "EXTERNAL_HOSTNAME": {

@@ -2,7 +2,7 @@
 
 ---
 
-A fast, lightweight way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
+The fastest way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
@@ -25,7 +25,7 @@ Free forever, but note that free Render instances take ~30 seconds to wake after
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/gsidsid/ai-express/)
 
-The fastest way to get started, automatically sets up MongoDB for you. Has a generous free tier, but will eventually require payment for continued use.
+The fastest way to get started, automatically sets up MongoDB for you. Has a generous free tier, but will eventually require ~$5/month for continued use.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
 
