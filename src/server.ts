@@ -4,6 +4,7 @@ import payload from "payload";
 import openai from "./openai";
 import path from "path";
 
+/*
 if (!process.env.AIEXPRESS_API_KEY)
   throw new Error(
     "AI Express API key not set. Please set the AIEXPRESS_API_KEY environment variable."
@@ -12,6 +13,7 @@ if (!process.env.OPENAI_API_KEY)
   throw new Error(
     "OpenAI API key not set. Please set the OPENAI_API_KEY environment variable."
   );
+*/
 
 const app = express();
 const port = process.env.PORT || 3000;
