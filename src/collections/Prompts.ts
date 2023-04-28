@@ -171,7 +171,7 @@ const Prompts: CollectionConfig = {
           label: "Rate Limit",
           name: "rateLimit",
           description:
-            "Limit the rate at which requests can be made to this endpoint. Useful for preventing abuse of endpoints with particularly large or expensive prompts. Note that this limit does not consider output validation retries.",
+            "Limit the rate at which requests can be made to this endpoint. Useful for preventing abuse of endpoints with particularly large or expensive prompts. Note that this limit does not consider output validation retries. Any edits to this prompt will reset the rate limit meter.",
           fields: [
             {
               name: "rateLimitEnabled",
