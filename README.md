@@ -6,7 +6,7 @@ A fast, lightweight way to turn AI prompts into ready-to-use API endpoints– de
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
-Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes. Note that free Render instances take ~30 seconds to wake after 15 minutes of inactivity, and should probably be just used for evaluation.
+Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes. Note that free Render instances take ~30 seconds to wake after 15 minutes of inactivity, and are better just used for evaluation.
 
 <details>
 <summary> More details on how to do this</summary>
@@ -49,13 +49,12 @@ Or, to build the docker image, run `docker build -t my-tag .`
 
 Ensure you are passing all needed environment variables when starting up your container via `--env-file` or setting them with your deployment.
 
-The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_CONFIG_PATH`. `RENDER_EXTERNAL_HOSTNAME` may also be relevant, depending on where you're deploying.
+The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_CONFIG_PATH`. `EXTERNAL_HOSTNAME` may also be relevant, depending on where you're deploying.
 
 `docker run --env-file .env -p 3000:3000 my-tag`
 
 ## Future
 
-- Plugins to let folks throw in other repetitive API stuff like redaction, rate limiting, and generated output validation middleware. Ideally all configurable just through the CMS.
 - Use Payload's form building plugin to let folks put together end-user apps.
 - A hosted service that makes setup even quicker, if there's interest.
 
