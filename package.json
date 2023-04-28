@@ -17,7 +17,7 @@
     "generate:graphQLSchema": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts $(node forward-env.js) payload generate:graphQLSchema"
   },
   "engines": {
-    "node": ">=16.0.0 <17.0.0"
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "@payloadcms/plugin-form-builder": "^1.0.13",
