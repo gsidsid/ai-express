@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { lazy, Suspense } from "react";
 
+if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
+  throw new Error(
+    "AI Express API key not found. Please set the PAYLOAD_PUBLIC_AIEXPRESS_API_KEY environment variable."
+  );
+
 const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 var Docs;
 
