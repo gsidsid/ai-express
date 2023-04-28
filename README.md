@@ -6,7 +6,7 @@ A fast, lightweight way to turn AI prompts into ready-to-use API endpoints– de
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
-Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes.
+Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes. Note that free Render instances are quite slow and take 5+ minutes to deploy and ~30 seconds to wake after 15 minutes of inactivity, so this should probably just be used for evaluation purposes.
 
 <details>
 <summary> More details on how to do this</summary>
@@ -43,9 +43,9 @@ The API will wait for and output the top chat completion `completion.data.choice
 
 ### Docker
 
-If you have docker and docker-compose installed, you can run `docker-compose up`
+If you have docker and docker-compose installed, you can run `docker compose up`. You may need to run `sudo chmod -R go+w /data/db` on the data/db directory first.
 
-To build the docker image, run `docker build -t my-tag .`
+Or, to build the docker image, run `docker build -t my-tag .`
 
 Ensure you are passing all needed environment variables when starting up your container via `--env-file` or setting them with your deployment.
 

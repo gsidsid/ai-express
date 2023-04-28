@@ -94,6 +94,7 @@ const inferVariablesFromPrompt = (
  * @returns The string representation of the object.
  */
 const stringify = (obj: unknown): string => {
+  if (obj === null || obj === undefined) return "";
   if (typeof obj === "string") return obj;
   return JSON.stringify(obj, null, 2);
 };
@@ -244,7 +245,7 @@ const countTokens = (str: string) => {
 };
 
 const getRouteName = (name: string) => {
-  return name.toLowerCase().replaceAll(" ", "-");
+  return name?.toLowerCase().replaceAll(" ", "-");
 };
 
 // Helper function for rate limiting

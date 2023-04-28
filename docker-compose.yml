@@ -16,7 +16,6 @@ services:
       MONGODB_URI: mongodb://mongo:27017/payload
       PORT: 3000
       NODE_ENV: development
-      AIEXPRESS_API_KEY: TESTING
 
   mongo:
     image: mongo:latest

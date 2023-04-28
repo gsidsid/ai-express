@@ -25,6 +25,9 @@ async function setupDynamicRoutes() {
   try {
     const routes = await payload.find({ collection: "prompts" });
     routes.docs.forEach((route) => {
+      if (!route.name || typeof route.name !== "string") {
+        return;
+      }
       // Apply rate limiting middleware
       if (rateLimitMiddlewareHandles[getRouteName(route.name)]) {
         let { func, dynamicRL } =
