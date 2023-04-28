@@ -49,7 +49,7 @@ Or, to build the docker image, run `docker build -t my-tag .`
 
 Ensure you are passing all needed environment variables when starting up your container via `--env-file` or setting them with your deployment.
 
-The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_CONFIG_PATH`. `EXTERNAL_HOSTNAME` may also be relevant, depending on where you're deploying.
+The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_CONFIG_PATH`. `RENDER_EXTERNAL_HOSTNAME` may also be relevant, depending on where you're deploying.
 
 `docker run --env-file .env -p 3000:3000 my-tag`
 
