@@ -4,7 +4,7 @@ services:
     plan: free
     name: ai-express
     env: node
-    buildCommand: yarn && yarn build
+    buildCommand: yarn install --ignore-optional
     startCommand: yarn serve
     envVars:
       - key: AIEXPRESS_API_KEY
@@ -17,7 +17,7 @@ services:
         generateValue: false
       - key: PORT
         value: 3000
-      - key: RENDER_EXTERNAL_HOSTNAME
+      - key: EXTERNAL_HOSTNAME
         fromService:
           name: ai-express
           type: web

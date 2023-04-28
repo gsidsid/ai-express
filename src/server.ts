@@ -17,8 +17,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const apiKey = process.env.AIEXPRESS_API_KEY;
 const mongoURL = process.env.MONGODB_URI || "mongodb://localhost/payload";
-const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
-  ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
+const serverURL = process.env.EXTERNAL_HOSTNAME
+  ? `https://${process.env.EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";
 
 process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
