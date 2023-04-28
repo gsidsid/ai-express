@@ -1,0 +1,38 @@
+.swagger-ui .info {
+  display: none;
+}
+
+.swagger-ui .opblock-tag {
+  display: none;
+}
+
+.swagger-ui .scheme-container {
+  display: none;
+}
+
+.swagger-ui .models {
+  display: none;
+}
+
+.collection-edit__api-url {
+  display: none;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.logo img {
+  max-width: 260px;
+  margin: auto;
+}
+
+.icon img {
+  max-width: 60px;
+  margin: auto;
+}
+
+.logo h1 {
+  margin: 3rem auto;
+  text-align: center;
+}
