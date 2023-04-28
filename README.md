@@ -6,7 +6,7 @@ A fast, lightweight way to turn AI prompts into ready-to-use API endpoints– de
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
-Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes. Note that free Render instances take 5-10 minutes to deploy and ~30 seconds to wake after 15 minutes of inactivity, and should probably be just used for evaluation.
+Run locally, or [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) to deploy it for free in a few minutes.
 
 <details>
 <summary> More details on how to do this</summary>
@@ -21,6 +21,7 @@ Then click the button below and have your connection URL ready.
 
 </details>
 
+[![Deploy to Cyclic](https://deploy.cyclic.sh/button.svg)](https://deploy.cyclic.sh/)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/gsidsid/ai-express/)
 
 ## Usage
