@@ -6,15 +6,31 @@ if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
     "AI Express API key not found. Please set the PAYLOAD_PUBLIC_AIEXPRESS_API_KEY environment variable."
   );
 
-const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 var Docs;
 
 const ApiDocs = () => {
   const [copied, setCopied] = useState(false);
+  const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
+
   Docs = Docs || lazy(() => import("./Swagger.js"));
 
   const copyToClipboard = (e) => {
-    navigator.clipboard.writeText(apiKey);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(apiKey);
+    } else {
+      // http fallback
+      const textArea = document.createElement("textarea");
+      textArea.value = apiKey;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.error("Unable to copy to clipboard", err);
+      }
+      document.body.removeChild(textArea);
+    }
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
