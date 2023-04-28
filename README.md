@@ -23,9 +23,9 @@ Then click the button below and have your connection URL ready.
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/gsidsid/ai-express/)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/gsidsid/ai-express/tree/main)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/6TOcSz)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/gNt0pf)
 
 ## Usage
 
@@ -48,14 +48,6 @@ The API will wait for and output the top chat completion `completion.data.choice
 ### Docker
 
 If you have docker and docker-compose installed, you can run `docker compose up`. You may need to run `sudo chmod -R go+w /data/db` on the data/db directory first.
-
-Or, to build the docker image, run `docker build -t my-tag .`
-
-Ensure you are passing all needed environment variables when starting up your container via `--env-file` or setting them with your deployment.
-
-The 3 typical env vars will be `MONGODB_URI`, `AIEXPRESS_API_KEY`, and `PAYLOAD_CONFIG_PATH`. `EXTERNAL_HOSTNAME` may also be relevant, depending on where you're deploying.
-
-`docker run --env-file .env -p 3000:3000 my-tag`
 
 ## Future
 

@@ -32,12 +32,6 @@
     }
   },
   "image": "heroku/nodejs",
-  "addons": [
-    {
-      "plan": "mongolab:shared-single-small",
-      "as": "MONGO"
-    }
-  ],
   "buildpacks": [
     {
       "url": "heroku/nodejs"
