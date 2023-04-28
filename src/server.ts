@@ -14,7 +14,7 @@ if (!process.env.OPENAI_API_KEY)
   );
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 const apiKey = process.env.AIEXPRESS_API_KEY;
 const mongoURL =
   process.env.MONGO_URL ||
@@ -49,7 +49,7 @@ const start = async () => {
     res.sendStatus(200);
   });
   openai.setupDynamicRoutes();
-  app.listen(port);
+  app.listen(port, "0.0.0.0", () => {});
 };
 
 start();

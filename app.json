@@ -21,14 +21,14 @@
       "required": true
     },
     "EXTERNAL_HOSTNAME": {
-      "description": "The hostname of your server– this will look like ai-express.herokuapp.com, or whatever subdomain you're choosing.",
+      "description": "The hostname of your server– this will look like <app name>.herokuapp.com, or whatever subdomain you're choosing.",
       "required": true
     }
   },
   "formation": {
     "web": {
       "quantity": 1,
-      "size": "standard-1x"
+      "size": "basic"
     }
   },
   "image": "heroku/nodejs",
