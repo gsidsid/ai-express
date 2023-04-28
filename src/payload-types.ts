@@ -20,6 +20,20 @@ export interface Prompt {
   description?: string;
   role?: string | Role;
   prompt: string;
+  validation: {
+    validationEnabled?: boolean;
+    maxRetries?: number;
+    validationFunction?: string;
+  };
+  rateLimit: {
+    rateLimitEnabled?: boolean;
+    requestsPerUnit?: number;
+    timeUnit?: 'minute' | 'hour' | 'day' | 'month';
+  };
+  redaction: {
+    redactionEnabled?: boolean;
+    redactionMode?: 'redact' | 'fail';
+  };
   createdAt: string;
   updatedAt: string;
 }
@@ -32,7 +46,6 @@ export interface Role {
 }
 export interface User {
   id: string;
-  name?: string;
   email?: string;
   resetPasswordToken?: string;
   resetPasswordExpiration?: string;

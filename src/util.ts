@@ -1,4 +1,7 @@
 import { Prompt, Role } from "./payload-types";
+import rateLimit from "express-rate-limit";
+import { AsyncRedactor } from "redact-pii";
+import safeEval from "safe-eval";
 
 interface SwaggerSpec {
   swagger: string;
@@ -132,7 +135,7 @@ const generateSwaggerSpec = (prompts: Prompt[]): SwaggerSpec => {
       return acc;
     }, {});
 
-    const endpointName = `${serverURL}/api/${getRouteName(prompt.name)}`;
+    const endpointName = `/api/${getRouteName(prompt.name)}`;
     const schemaName = `${prompt.name} Request Body`;
 
     paths[endpointName] = {
@@ -228,6 +231,57 @@ const getRouteName = (name: string) => {
   return name.toLowerCase().replaceAll(" ", "-");
 };
 
+// Helper function for rate limiting
+const createRateLimiter = (route) => {
+  // timeUnit is "minute", "hour", "day", or "month"
+  let timeUnitMs;
+  switch (route.rateLimit.timeUnit) {
+    case "minute":
+      timeUnitMs = 60 * 1000;
+      break;
+    case "hour":
+      timeUnitMs = 60 * 60 * 1000;
+      break;
+    case "day":
+      timeUnitMs = 24 * 60 * 60 * 1000;
+      break;
+    default:
+      throw new Error("Invalid time unit");
+  }
+  return rateLimit({
+    windowMs: timeUnitMs,
+    max: route.rateLimit.requestsPerUnit,
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+};
+
+// Helper function for PII redaction
+const redactPII = async (text) => {
+  const redactor = new AsyncRedactor();
+  return await redactor.redactAsync(text);
+};
+
+// Helper function for output validation
+const validateOutput = (validationFunction, result) => {
+  const validationResult = safeEval(`${validationFunction}()`, { result });
+
+  if (validationResult === true) {
+    return { valid: true, errorMessage: null };
+  } else if (typeof validationResult === "string") {
+    return { valid: false, errorMessage: validationResult };
+  } else if (validationResult === false) {
+    return { valid: false, errorMessage: "Invalid output. Please try again." };
+  } else {
+    throw new Error("Invalid output validation function");
+  }
+};
+
+const replaceVariable = (template, variable, value) => {
+  const regex = new RegExp(`{{${variable}(?:\\|[^}|]+)?(?:\\|[^}]*)?}}`, "g");
+  return template.replace(regex, () => value);
+};
+
 export {
   inferVariablesFromPrompt,
   stringify,
@@ -236,4 +290,8 @@ export {
   generateSwaggerSpec,
   getRouteName,
   countTokens,
+  createRateLimiter,
+  redactPII,
+  validateOutput,
+  replaceVariable,
 };

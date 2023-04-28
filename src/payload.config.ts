@@ -42,6 +42,17 @@ export default buildConfig({
       titleSuffix: "– AI Express",
       favicon: "/assets/favicon.svg",
     },
+    webpack: (config) => {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: require.resolve("browserify-fs"),
+        child_process: false,
+        stream: require.resolve("stream-browserify"),
+        vm: require.resolve("vm-browserify"),
+        request: require.resolve("browser-request"),
+      };
+      return config;
+    },
   },
   plugins: [],
 });

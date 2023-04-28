@@ -1,9 +1,13 @@
 import { CollectionConfig } from "payload/types";
 import { countTokens, getRouteName } from "../util";
+import payload from "payload";
+import axios from "axios";
 
-const serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
-  ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`
+const serverURL = process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME
+  ? `https://${process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";
+
+const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 
 const Prompts: CollectionConfig = {
   slug: "prompts",
@@ -120,13 +124,132 @@ const Prompts: CollectionConfig = {
         return true;
       },
     },
+    {
+      type: "tabs",
+      tabs: [
+        {
+          label: "Output Validation",
+          name: "validation",
+          description:
+            "Add validation rules for the AI's response, and automatically retry the request if the AI's response does not pass validation. This ensures a deterministic response from this endpoint, or an error.",
+          fields: [
+            {
+              name: "validationEnabled",
+              type: "checkbox",
+              label: "Enable Output Validation",
+              defaultValue: false,
+            },
+            {
+              name: "maxRetries",
+              type: "number",
+              label: "Maximum Retries",
+              required: false,
+              defaultValue: 3,
+              min: 1,
+              max: 10,
+              admin: {
+                condition: (_, siblingData) => siblingData.validationEnabled,
+              },
+            },
+            {
+              name: "validationFunction",
+              type: "code",
+              label: "Validation Function",
+              required: false,
+              defaultValue:
+                "function validateOutput() {\n  // Return a specific error message (string) if there is a problem or true if the output passes validation\n  // Result string from AI available as `result`\n  return true;\n}",
+              admin: {
+                language: "javascript",
+                condition: (_, siblingData) => siblingData.validationEnabled,
+                description:
+                  "If the validation function returns an error message, the AI will be provided with that message and your prompt will be retried, up to the maximum number of retries. If the validation function returns true, the AI's response will be returned.",
+              },
+            },
+          ],
+        },
+        {
+          label: "Rate Limit",
+          name: "rateLimit",
+          description:
+            "Limit the rate at which requests can be made to this endpoint. Useful for preventing abuse of endpoints with particularly large or expensive prompts. Note that this limit does not consider output validation retries.",
+          fields: [
+            {
+              name: "rateLimitEnabled",
+              type: "checkbox",
+              label: "Enable Rate Limit",
+              defaultValue: false,
+            },
+            {
+              name: "requestsPerUnit",
+              type: "number",
+              label: "Requests per Time Unit",
+              required: false,
+              defaultValue: 60,
+              admin: {
+                condition: (_, siblingData) => siblingData.rateLimitEnabled,
+              },
+            },
+            {
+              name: "timeUnit",
+              type: "select",
+              label: "Time Unit",
+              required: false,
+              options: [
+                { label: "Minute", value: "minute" },
+                { label: "Hour", value: "hour" },
+                { label: "Day", value: "day" },
+              ],
+              defaultValue: "minute",
+              admin: {
+                condition: (_, siblingData) => siblingData.rateLimitEnabled,
+              },
+            },
+          ],
+        },
+        {
+          label: "Redact PII",
+          name: "redaction",
+          description:
+            "Automatically redact or fail if personal identifiable information is detected in the API request, before the request is sent to the AI.",
+          fields: [
+            {
+              name: "redactionEnabled",
+              type: "checkbox",
+              label: "Enable PII Redaction",
+              defaultValue: false,
+            },
+            {
+              name: "redactionMode",
+              type: "select",
+              label: "Redaction Mode",
+              required: false,
+              options: [
+                { label: "Redact", value: "redact" },
+                { label: "Fail", value: "fail" },
+              ],
+              defaultValue: "redact",
+              admin: {
+                condition: (_, siblingData) => siblingData.redactionEnabled,
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [
       ({ doc }) => {
-        fetch(`${serverURL}/api/update-routes`, {
-          method: "POST",
-        });
+        payload.logger.info("Updating routes...");
+        axios.post(
+          `${serverURL}/api/update-routes`,
+          {},
+          {
+            headers: {
+              "x-api-key": apiKey,
+            },
+          }
+        );
         return doc;
       },
     ],

@@ -14,10 +14,15 @@ const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 
 const Docs = () => {
   const [prompts, setPrompts] = useState(null);
+  const [swaggerSpec, setSwaggerSpec] = useState(null);
+
   useEffect(() => {
     async function fetchData() {
       const { data } = await axios.get("/api/prompts");
-      setPrompts(data.docs);
+      if (JSON.stringify(data.docs) !== JSON.stringify(prompts)) {
+        setPrompts(data.docs);
+        setSwaggerSpec(generateSwaggerSpec(data.docs));
+      }
     }
     fetchData();
   }, []);
@@ -28,7 +33,7 @@ const Docs = () => {
     return (
       <SwaggerUI
         displayRequestDuration={true}
-        spec={generateSwaggerSpec(prompts)}
+        spec={swaggerSpec}
         requestInterceptor={(req) => {
           req.headers["x-api-key"] = apiKey;
           return req;
