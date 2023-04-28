@@ -16,7 +16,10 @@ if (!process.env.OPENAI_API_KEY)
 const app = express();
 const port = process.env.PORT || 3000;
 const apiKey = process.env.AIEXPRESS_API_KEY;
-const mongoURL = process.env.MONGODB_URI || "mongodb://localhost/payload";
+const mongoURL =
+  process.env.MONGO_URL ||
+  process.env.MONGODB_URI ||
+  "mongodb://localhost/payload";
 const serverURL = process.env.EXTERNAL_HOSTNAME
   ? `https://${process.env.EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";

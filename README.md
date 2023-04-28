@@ -25,7 +25,7 @@ Then click the button below and have your connection URL ready.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/gsidsid/ai-express/tree/main)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/gNt0pf)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/qqEd0E)
 
 ## Usage
 
