@@ -155,8 +155,8 @@ var app = (0, express_1.default)();
 var port = process.env.PORT || 3000;
 var apiKey = process.env.AIEXPRESS_API_KEY;
 var mongoURL = process.env.MONGODB_URI || "mongodb://localhost/payload";
-var serverURL = process.env.EXTERNAL_HOSTNAME
-  ? "https://".concat(process.env.EXTERNAL_HOSTNAME)
+var serverURL = process.env.RENDER_EXTERNAL_HOSTNAME
+  ? "https://".concat(process.env.RENDER_EXTERNAL_HOSTNAME)
   : "http://localhost:3000";
 process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
 app.get("/", function (_, res) {

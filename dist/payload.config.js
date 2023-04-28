@@ -31,8 +31,8 @@ var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({
   path: path_1.default.resolve(__dirname, "../.env"),
 });
-var serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
-  ? "https://".concat(process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME)
+var serverURL = process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME
+  ? "https://".concat(process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME)
   : "http://localhost:3000";
 exports.default = (0, config_1.buildConfig)({
   serverURL: serverURL,
