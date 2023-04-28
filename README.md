@@ -2,7 +2,7 @@
 
 ---
 
-The fastest way to turn AI prompt completions into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
+A fast way to turn AI prompt completions into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
