@@ -37,4 +37,9 @@ if (process.env.RENDER_EXTERNAL_HOSTNAME) {
     process.env.RENDER_EXTERNAL_HOSTNAME;
 }
 
+if (process.env.MONGODB_URI) {
+  envVars += `PAYLOAD_PUBLIC_MONGODB_URI=${process.env.MONGODB_URI} `;
+  process.env.PAYLOAD_PUBLIC_MONGODB_URI = process.env.MONGODB_URI;
+}
+
 console.log(envVars.trim());

@@ -7,10 +7,11 @@ if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
   );
 
 const apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
+var Docs;
 
 const ApiDocs = () => {
   const [copied, setCopied] = useState(false);
-  const Docs = lazy(() => import("./Swagger.js"));
+  Docs = Docs || lazy(() => import("./Swagger.js"));
 
   const copyToClipboard = (e) => {
     navigator.clipboard.writeText(apiKey);

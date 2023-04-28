@@ -28,6 +28,22 @@ interface SwaggerSpec {
 const serverURL = process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME
   ? `https://${process.env.PAYLOAD_PUBLIC_RENDER_EXTERNAL_HOSTNAME}`
   : "http://localhost:3000";
+const mongoURL =
+  process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://localhost/payload";
+
+function getMongoDBDetails() {
+  let connectionString = mongoURL;
+  const regex = /^mongodb(?:\+srv)?:\/\/([^:]+):([^@]+)@(.+)$/;
+  const match = connectionString.match(regex);
+  if (match) {
+    const user = match[1];
+    const password = match[2];
+    const uri = `mongodb+srv://${match[3]}`;
+    return { user, password, uri };
+  } else {
+    throw new Error("Invalid MongoDB connection string");
+  }
+}
 
 /**
  * Infers variables from a text prompt in the format {{variableName}}, with optional description and default value.
