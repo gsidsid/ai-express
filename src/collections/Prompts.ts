@@ -242,7 +242,7 @@ const Prompts: CollectionConfig = {
       ({ doc }) => {
         payload.logger.info("Updating routes...");
         axios.post(
-          `${serverURL}/api/update-routes`,
+          `${serverURL}/update-routes`,
           {},
           {
             headers: {

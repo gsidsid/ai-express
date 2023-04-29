@@ -47,12 +47,17 @@ const start = async () => {
     },
   });
   app.use(express.json());
-  app.use(openai.router);
-  app.post("/api/update-routes", async (req, res) => {
+  app.post("/update-routes", async (req, res) => {
     await openai.setupDynamicRoutes();
+    app.use(function (req, res, next) {
+      openai.getRouter()(req, res, next);
+    });
     res.sendStatus(200);
   });
-  openai.setupDynamicRoutes();
+  await openai.setupDynamicRoutes();
+  app.use(function (req, res, next) {
+    openai.getRouter()(req, res, next);
+  });
   app.listen(port, "0.0.0.0", () => {});
 };
 

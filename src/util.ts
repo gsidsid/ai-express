@@ -1,5 +1,6 @@
 import { Prompt, Role } from "./payload-types";
 import rateLimit from "express-rate-limit";
+import payload from "payload";
 import { AsyncRedactor } from "redact-pii";
 import safeEval from "safe-eval";
 
@@ -282,12 +283,15 @@ const redactPII = async (text) => {
 // Helper function for output validation
 const validateOutput = (validationFunction, result) => {
   const validationResult = safeEval(`${validationFunction}()`, { result });
-
   if (validationResult === true) {
     return { valid: true, errorMessage: null };
   } else if (typeof validationResult === "string") {
+    payload.logger.info(`Result: ${result}`);
+    payload.logger.info(`Error: ${JSON.stringify(validationResult)}`);
     return { valid: false, errorMessage: validationResult };
   } else if (validationResult === false) {
+    payload.logger.info(`Result: ${result}`);
+    payload.logger.info(`Error: "Invalid output. Please try again."`);
     return { valid: false, errorMessage: "Invalid output. Please try again." };
   } else {
     throw new Error("Invalid output validation function");
