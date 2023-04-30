@@ -123,7 +123,10 @@ const apiKeyMiddleware = (req, res, next): void => {
     process.env.AIEXPRESS_API_KEY &&
     (!apiKey || apiKey !== process.env.AIEXPRESS_API_KEY)
   ) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({
+      message:
+        "Unauthorized. Make sure to include the correct x-api-key header in your request.",
+    });
   }
   next();
 };

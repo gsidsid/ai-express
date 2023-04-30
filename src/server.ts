@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express from "express";
 import payload from "payload";
+import admin from "./admin";
 import openai from "./openai";
 import path from "path";
 
@@ -58,6 +59,7 @@ const start = async () => {
   app.use(function (req, res, next) {
     openai.getRouter()(req, res, next);
   });
+  app.use("/admin-api", admin);
   app.listen(port, "0.0.0.0", () => {});
 };
 

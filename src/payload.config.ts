@@ -1,7 +1,9 @@
 import { buildConfig } from "payload/config";
+import payloadSimpleRBAC from "@nouance/payload-simple-rbac";
 import path from "path";
 import Prompts from "./collections/Prompts";
 import Roles from "./collections/Roles";
+import Users from "./collections/Users";
 import ApiDocs from "./components/ApiDocs.js";
 import { Logo, Icon } from "./components/Graphics";
 import dotenv from "dotenv";
@@ -15,9 +17,11 @@ const serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
   ? `https://${process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME}`
   : `http://0.0.0.0:${process.env.PAYLOAD_PUBLIC_PORT || 3000}`;
 
+export const roles = ["viewer", "editor", "admin"];
+
 export default buildConfig({
   serverURL,
-  collections: [Prompts, Roles],
+  collections: [Prompts, Roles, Users],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
@@ -29,6 +33,42 @@ export default buildConfig({
     api: "/api",
     admin: "/admin",
   },
+  plugins: [
+    payloadSimpleRBAC({
+      roles,
+      users: [],
+      defaultRole: "admin",
+      collections: [
+        {
+          slug: Prompts.slug,
+          permissions: {
+            read: "public",
+            update: "editor",
+            create: "editor",
+            delete: "editor",
+          },
+        },
+        {
+          slug: Roles.slug,
+          permissions: {
+            read: "public",
+            update: "editor",
+            create: "editor",
+            delete: "editor",
+          },
+        },
+        {
+          slug: Users.slug,
+          permissions: {
+            read: "admin",
+            update: "admin",
+            create: "admin",
+            delete: "admin",
+          },
+        },
+      ],
+    }),
+  ],
   admin: {
     avatar: "gravatar",
     components: {
@@ -55,5 +95,4 @@ export default buildConfig({
       return config;
     },
   },
-  plugins: [],
 });
