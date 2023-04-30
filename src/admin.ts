@@ -31,6 +31,8 @@ router.get("/prompts", async (req, res) => {
   }
 });
 
+/* PLUGIN WIP
+
 router.post("/prompts", async (req, res) => {
   try {
     let { name, description, prompt, model } = req.body;
@@ -74,5 +76,6 @@ router.post("/prompts", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+*/
 
 export default router;
