@@ -23,6 +23,7 @@ const Users: CollectionConfig = {
         { label: "Admin", value: "admin" },
       ],
       defaultValue: "editor",
+      saveToJWT: true,
       required: true,
       admin: {
         description:
