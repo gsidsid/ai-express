@@ -8,6 +8,19 @@ Run locally, or deploy in one click using the button below. If you are deploying
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
 
+<details>
+<summary> If you're deploying elsewhere, you will likely need to set up a database on MongoDB Atlas (expand for more info).</summary>
+
+1. [Sign up for MongoDB](https://www.mongodb.com/cloud/atlas/register). On the "Deploy your database" screen, select AWS, M0 – Free (or whatever level of hosting you'd like, but free really ought to be more than enough).
+
+2. Create a user profile for the new database and make a note of your database username and password. Then from the "Network Access" page, click "Add IP Address" then "Allow access from anywhere". You can easily configure this later to include only the IP addresses of your Render deployment for extra security.
+
+3. Go to "Database" in the sidebar, click the "Connect" button for the database you just created, select "Drivers", and copy the connection string URL. Note that you'll need to fill in the `<password>` part of the URL with that of the profile you created in step 2.
+
+Then set your connection URL as the `MONGODB_URI` environment variable wherever you host AI Express.
+
+</details>
+
 ![Dashboard](src/assets/readme-dashboard.png)
 
 ## Usage
