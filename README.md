@@ -6,32 +6,9 @@ The fastest way to turn AI prompts into ready-to-use API endpoints– deploy wit
 
 ![Dashboard](src/assets/readme-dashboard.png)
 
-Run locally, or deploy in a few minutes using a provider of your choice. Some one-click options are provided below. Depending on your choice, you may need to [set up a database on MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register).
-
-<details>
-<summary> More details on setting up MongoDB</summary>
-
-1. [Sign up for MongoDB](https://www.mongodb.com/cloud/atlas/register). On the "Deploy your database" screen, select AWS, M0 – Free (or whatever level of hosting you'd like, but free really ought to be more than enough).
-
-2. Create a user profile for the new database and make a note of your database username and password. Then from the "Network Access" page, click "Add IP Address" then "Allow access from anywhere". You can easily configure this later to include only the IP addresses of your Render deployment for extra security.
-
-3. Go to "Database" in the sidebar, click the "Connect" button for the database you just created, select "Drivers", and copy the connection string URL. Note that you'll need to fill in the `<password>` part of the URL with that of the profile you created in step 2.
-
-Then click the button below and have your connection URL ready.
-
-</details>
-
-Free forever, but note that free Render instances take ~30 seconds to wake after 15 minutes of inactivity and are better just used for evaluation.
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/gsidsid/ai-express/)
-
-(Recommended) The fastest way to get started, automatically sets up MongoDB for you. Has a generous free tier, and will eventually cost < $1/month (after applying the $5 in free monthly credits).
+Run locally, or deploy in 2 minutes using the button below. If you are deploying AI Express for production use, make sure to customize the AIEXPRESS_API_KEY environment variable with a new random value that you keep secret.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
-
-Requires $7/month for a basic instance.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/gsidsid/ai-express/tree/main)
 
 ## Usage
 
