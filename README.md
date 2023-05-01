@@ -4,11 +4,11 @@
 
 The fastest way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
-![Dashboard](src/assets/readme-dashboard.png)
-
 Run locally, or deploy in 2 minutes using the button below. If you are deploying AI Express for production use, make sure to customize the AIEXPRESS_API_KEY environment variable with a new random value that you keep secret.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
+
+![Dashboard](src/assets/readme-dashboard.png)
 
 ## Usage
 
