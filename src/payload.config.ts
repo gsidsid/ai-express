@@ -36,7 +36,7 @@ export default buildConfig({
   plugins: [
     payloadSimpleRBAC({
       roles,
-      users: [Users.slug],
+      users: [],
       defaultRole: "admin",
       collections: [
         {
