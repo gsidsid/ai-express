@@ -9,7 +9,7 @@ Run locally, or deploy in one click using the button below. If you are deploying
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
 
 <details>
-<summary> If you're deploying elsewhere, you will likely need to set up a database on MongoDB Atlas (expand for more info).</summary>
+<summary> If you're deploying elsewhere, you will likely need to set up a database on MongoDB Atlas.</summary>
 
 1. [Sign up for MongoDB](https://www.mongodb.com/cloud/atlas/register). On the "Deploy your database" screen, select AWS, M0 – Free (or whatever level of hosting you'd like, but free really ought to be more than enough).
 
