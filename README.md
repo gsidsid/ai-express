@@ -60,8 +60,4 @@ Requires vector DB:
 - Optional index of and lookup through all prior output for a particular endpoint
 - Separate tab where documents/urls/websites can be uploaded, extracted, and can be automatically drawn upon globally
 
-Other:
-
-- Code mode where only Python or JS code is output, automatically executed in a sandbox, results are provided through JSON, after a prompt chain against any error messages until `max_retries`
-
 Contributions are welcome.
