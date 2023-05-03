@@ -2,7 +2,7 @@
 
 A fast way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface. Comes out of the box with configurable input redaction, output validation, prompt retry, rate limiting & output caching infrastructure with no additional setup.
 
-Run locally, or deploy in one click using the button below. If you are deploying AI Express for production use, make sure to customize the AIEXPRESS_API_KEY environment variable with a new random value that you keep secret.
+Run locally, or deploy in one click using the button below. If you are deploying AI Express for production use, make sure to customize the `AIEXPRESS_API_KEY` environment variable with a new random value that you keep secret.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
 
