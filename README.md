@@ -61,6 +61,6 @@ Requires vector DB:
 
 Other:
 
-- VM mode where only Python or JS code is output, automatically executed, results are provided through JSON, after a prompt chain against any error messages until `max_retries`
+- VM mode where only Python or JS code is output, automatically executed in a sandbox, results are provided through JSON, after a prompt chain against any error messages until `max_retries`
 
 Contributions are welcome.
