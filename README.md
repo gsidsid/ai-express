@@ -1,6 +1,6 @@
 ![Banner](src/assets/readme-banner.png)
 
-The fastest way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
+A fast way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 Run locally, or deploy in one click using the button below. If you are deploying AI Express for production use, make sure to customize the AIEXPRESS_API_KEY environment variable with a new random value that you keep secret.
 
@@ -27,7 +27,7 @@ This template uses a simple express server with a Payload CMS configuration to g
 
 ![Dashboard](src/assets/readme-editor.png)
 
-Every prompt document created instantly becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect and check for in an HTTP POST request.
+Every prompt document created becomes a live API endpoint, and any variable in double curly braces in the prompt text, like `{{name}}`, `{{age}}`, `{{color}}`, etc. automatically becomes a requirement to the JSON body that API endpoint will expect and check for in an HTTP POST request.
 
 Variable notation can be extended to include more info `{{variableName|defaultValue|description}}`, prompts are automatically validated for token length against the model selected in the text editor, and API documentation + a test bench are maintained via Swagger so you can test changes to your prompts without firing up Postman.
 
@@ -47,8 +47,10 @@ If you have docker and docker-compose installed, you can run `docker compose up`
 
 ## Future
 
-- A demo deployment + account to click around in without needing to deploy.
-- Use Payload's form building plugin to let folks put together end-user apps.
-- A hosted service that makes setup even quicker, if there's interest.
+- Optional in memory caching of LLM output based on exact prompt text
+- Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files/websites
+- Global values that can be referenced across all prompts
+- Automatic “prompt splitting” into vector db and lookup if prompt is too long
+- Optional index of and lookup through all prior output for a particular endpoint
 
 Contributions are welcome.
