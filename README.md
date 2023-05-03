@@ -47,10 +47,16 @@ If you have docker and docker-compose installed, you can run `docker compose up`
 
 ## Future
 
+Low-hanging fruit:
+
 - Optional in memory caching of LLM output based on exact prompt text
-- Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files/websites
-- Global values that can be referenced across all prompts
+- Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files (text/excel/json/pdf/websites)
+- Global values/snippets that can be pre-fetched and referenced across all prompts
+
+Requires vector DB:
+
 - Automatic “prompt splitting” into vector db and lookup if prompt is too long
 - Optional index of and lookup through all prior output for a particular endpoint
+- Separate tab where documents/urls/websites can be uploaded, extracted, and are automatically be drawn upon
 
 Contributions are welcome.
