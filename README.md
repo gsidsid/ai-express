@@ -1,7 +1,5 @@
 ![Banner](src/assets/readme-banner.png)
 
-## <a href="https://www.producthunt.com/posts/ai-express?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ai&#0045;express" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=391903&theme=neutral" alt="AI&#0032;Express - Heroku&#0032;for&#0032;AI&#0032;prompt&#0032;based&#0032;applications&#0046; | Product Hunt" style="width: 125px; height: 27px;" width="125" height="27" /></a>
-
 The fastest way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface.
 
 Run locally, or deploy in one click using the button below. If you are deploying AI Express for production use, make sure to customize the AIEXPRESS_API_KEY environment variable with a new random value that you keep secret.
