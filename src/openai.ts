@@ -136,8 +136,8 @@ async function setupDynamicRoutes() {
                 messages,
                 temperature: params?.temperature,
                 top_p: params?.top_p,
-                presence_penalty: 0.3,
-                frequency_penalty: 0.5,
+                presence_penalty: params?.presence_penalty,
+                frequency_penalty: params?.frequency_penalty,
                 logit_bias: params?.logit_bias && typeof params.logit_bias === "object" && Object.keys(params.logit_bias).length > 0 ? params.logit_bias : undefined,
               });
               result = completion.data.choices[0].message?.content.trim();
