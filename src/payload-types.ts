@@ -25,14 +25,53 @@ export interface Prompt {
     maxRetries?: number;
     validationFunction?: string;
   };
+  caching: {
+    cachingEnabled?: boolean;
+    cacheTTL?: number;
+  };
   rateLimit: {
     rateLimitEnabled?: boolean;
     requestsPerUnit?: number;
-    timeUnit?: 'minute' | 'hour' | 'day' | 'month';
+    timeUnit?: 'minute' | 'hour' | 'day';
   };
   redaction: {
     redactionEnabled?: boolean;
     redactionMode?: 'redact' | 'fail';
+    redactionOptions?: {
+      redactType:
+        | 'regex'
+        | 'emailAddress'
+        | 'phoneNumber'
+        | 'creditCardNumber'
+        | 'ipAddress'
+        | 'names'
+        | 'streetAddress'
+        | 'zipcode'
+        | 'url'
+        | 'digits'
+        | 'username'
+        | 'password'
+        | 'credentials'
+        | 'usSocialSecurityNumber';
+      regexValue: string;
+      regexReplacement: string;
+      id?: string;
+    }[];
+  };
+  params: {
+    temperature?: number;
+    top_p?: number;
+    presence_penalty?: number;
+    frequency_penalty?: number;
+    logit_bias?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
   };
   createdAt: string;
   updatedAt: string;

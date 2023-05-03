@@ -1,31 +1,36 @@
-require("dotenv").config();
+import dotenv from "dotenv";
 import express from "express";
 import payload from "payload";
 import admin from "./admin";
 import openai from "./openai";
 import path from "path";
 
-if (!process.env.AIEXPRESS_API_KEY)
-  throw new Error(
-    "AI Express API key not set. Please set the AIEXPRESS_API_KEY environment variable."
-  );
-if (!process.env.OPENAI_API_KEY)
-  throw new Error(
-    "OpenAI API key not set. Please set the OPENAI_API_KEY environment variable."
-  );
+dotenv.config();
 
-const app = express();
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-const apiKey = process.env.AIEXPRESS_API_KEY;
-const mongoURL =
+const AIEXPRESS_API_KEY = process.env.AIEXPRESS_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+const MONGO_URL =
   process.env.MONGO_URL ||
   process.env.MONGODB_URI ||
   "mongodb://0.0.0.0/payload";
-const serverURL = process.env.EXTERNAL_HOSTNAME
+const SERVER_URL = process.env.EXTERNAL_HOSTNAME
   ? `https://${process.env.EXTERNAL_HOSTNAME}`
   : `http://0.0.0.0:${process.env.PORT || 3000}`;
 
-process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY = apiKey;
+if (!AIEXPRESS_API_KEY) {
+  throw new Error(
+    "AI Express API key not set. Please set the AIEXPRESS_API_KEY environment variable."
+  );
+}
+
+if (!OPENAI_API_KEY) {
+  throw new Error(
+    "OpenAI API key not set. Please set the OPENAI_API_KEY environment variable."
+  );
+}
+
+const app = express();
 
 app.get("/", (_, res) => {
   res.redirect("/admin");
@@ -37,30 +42,34 @@ app.get("/health", (_, res) => {
 
 const start = async () => {
   app.use("/assets", express.static(path.resolve(__dirname, "./assets")));
+
   await payload.init({
-    secret: apiKey,
-    mongoURL,
+    secret: AIEXPRESS_API_KEY,
+    mongoURL: MONGO_URL,
     express: app,
     onInit: async () => {
       payload.logger.info(
-        `AI Express server successfully started. Get started by adding a new prompt at ${serverURL}.`
+        `AI Express server successfully started. Get started by adding a new prompt at ${SERVER_URL}.`
       );
     },
   });
+
   app.use(express.json());
   app.post("/update-routes", async (req, res) => {
     await openai.setupDynamicRoutes();
-    app.use(function (req, res, next) {
+    app.use((req, res, next) => {
       openai.getRouter()(req, res, next);
     });
     res.sendStatus(200);
   });
+
   await openai.setupDynamicRoutes();
-  app.use(function (req, res, next) {
+  app.use((req, res, next) => {
     openai.getRouter()(req, res, next);
   });
+
   app.use("/admin-api", admin);
-  app.listen(port, "0.0.0.0", () => {});
+  app.listen(PORT, "0.0.0.0", () => {});
 };
 
 start();

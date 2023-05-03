@@ -29,22 +29,6 @@ interface SwaggerSpec {
 const serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
   ? `https://${process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME}`
   : `http://0.0.0.0:${process.env.PAYLOAD_PUBLIC_PORT || 3000}`;
-const mongoURL =
-  process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://0.0.0.0/payload";
-
-function getMongoDBDetails() {
-  let connectionString = mongoURL;
-  const regex = /^mongodb(?:\+srv)?:\/\/([^:]+):([^@]+)@(.+)$/;
-  const match = connectionString.match(regex);
-  if (match) {
-    const user = match[1];
-    const password = match[2];
-    const uri = `mongodb+srv://${match[3]}`;
-    return { user, password, uri };
-  } else {
-    throw new Error("Invalid MongoDB connection string");
-  }
-}
 
 /**
  * Infers variables from a text prompt in the format {{variableName}}, with optional description and default value.
@@ -277,9 +261,69 @@ const createRateLimiter = (route) => {
   });
 };
 
+function createRedactor(options) {
+  const customRedactors = options.map((option) => {
+    if (option.redactType === "regex") {
+      return {
+        regexpPattern: new RegExp(option.regexValue, "gi"),
+        replaceWith: option.regexReplacement,
+      };
+    }
+    return null;
+  });
+
+  // Unique types for built-in redactors
+  const uniqueRedactTypes = Array.from(
+    new Set(options.map((option) => option.redactType))
+  ) as string[];
+
+  const allBuiltInRedactors = [
+    "emailAddress",
+    "phoneNumber",
+    "creditCardNumber",
+    "ipAddress",
+    "names",
+    "streetAddress",
+    "zipcode",
+    "url",
+    "digits",
+    "username",
+    "password",
+    "credentials",
+    "usSocialSecurityNumber",
+  ];
+
+  const builtInRedactors = uniqueRedactTypes
+    .filter((redactType) => redactType !== "regex")
+    .reduce((accumulator, redactType) => {
+      accumulator[redactType] = {
+        enabled: true,
+      };
+      return accumulator;
+    }, {});
+
+  // Disable redactors not included in the list
+  allBuiltInRedactors.forEach((redactor) => {
+    if (!builtInRedactors.hasOwnProperty(redactor)) {
+      builtInRedactors[redactor] = {
+        enabled: false,
+      };
+    }
+  });
+
+  const redactor = new AsyncRedactor({
+    customRedactors: {
+      before: customRedactors.filter((redactor) => redactor !== null),
+    },
+    builtInRedactors: builtInRedactors,
+  });
+
+  return redactor;
+}
+
 // Helper function for PII redaction
-const redactPII = async (text) => {
-  const redactor = new AsyncRedactor();
+const redactPII = async (options, text) => {
+  const redactor = createRedactor(options);
   return await redactor.redactAsync(text);
 };
 

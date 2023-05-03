@@ -128,7 +128,7 @@ const Prompts: CollectionConfig = {
       type: "tabs",
       tabs: [
         {
-          label: "Output Validation",
+          label: "Validate",
           name: "validation",
           description:
             "Add validation rules for the AI's response, and automatically retry the request if the AI's response does not pass validation. This ensures a deterministic response from this endpoint, or an error.",
@@ -163,6 +163,32 @@ const Prompts: CollectionConfig = {
                 condition: (_, siblingData) => siblingData.validationEnabled,
                 description:
                   "If the validation function returns an error message, the AI will be provided with that message and your prompt will be retried, up to the maximum number of retries. If the validation function returns true, the AI's response will be returned.",
+              },
+            },
+          ],
+        },
+        {
+          label: "Cache",
+          name: "caching",
+          description:
+            "Cache the AI's response for completions with the same variable values. Useful for endpoints with particularly large or expensive prompts, and when calls with repeat data are possible. Edits to the prompt text will reset the cache. Caching uses a memory store and will not work on longer timescales on ephemeral free-tier instances.",
+          fields: [
+            {
+              name: "cachingEnabled",
+              type: "checkbox",
+              label: "Enable Caching",
+              defaultValue: false,
+            },
+            {
+              name: "cacheTTL",
+              type: "number",
+              label: "Cache TTL (seconds)",
+              required: false,
+              defaultValue: 3600,
+              admin: {
+                condition: (_, siblingData) => siblingData.cachingEnabled,
+                description:
+                  "The amount of time to cache the AI's response for. After this time, the AI will be called again.",
               },
             },
           ],
@@ -207,7 +233,7 @@ const Prompts: CollectionConfig = {
           ],
         },
         {
-          label: "Redact PII",
+          label: "Redact",
           name: "redaction",
           description:
             "Automatically redact or fail if personal identifiable information is detected in the API request, before the request is sent to the AI.",
@@ -230,6 +256,133 @@ const Prompts: CollectionConfig = {
               defaultValue: "redact",
               admin: {
                 condition: (_, siblingData) => siblingData.redactionEnabled,
+              },
+            },
+            // if redactionMode is redact, show the following
+            {
+              name: "redactionOptions",
+              type: "array",
+              label: "Redact Values",
+              required: false,
+              fields: [
+                {
+                  name: "redactType",
+                  type: "select",
+                  label: "Redact Type",
+                  required: true,
+                  options: [
+                    { label: "Regular Expression", value: "regex" },
+                    { label: "Email Addresses", value: "emailAddress" },
+                    { label: "Phone Numbers", value: "phoneNumber" },
+                    { label: "Credit Card Numbers", value: "creditCardNumber" },
+                    { label: "IP Addresses", value: "ipAddress" },
+                    { label: "Names", value: "names" },
+                    { label: "Street Addresses", value: "streetAddress" },
+                    { label: "Zip Codes", value: "zipcode" },
+                    { label: "URLs", value: "url" },
+                    { label: "Digits", value: "digits" },
+                    { label: "Usernames", value: "username" },
+                    { label: "Passwords", value: "password" },
+                    { label: "Credentials", value: "credentials" },
+                    { label: "SSN", value: "usSocialSecurityNumber" },
+                  ],
+                  defaultValue: "regex",
+                },
+                {
+                  name: "regexValue",
+                  type: "text",
+                  label: "Regex Value",
+                  required: true,
+                  admin: {
+                    condition: (_, siblingData) =>
+                      siblingData.redactType === "regex",
+                    placeholder: "(?i)\\b(\\w*password\\w*)\\b",
+                  },
+                },
+                {
+                  name: "regexReplacement",
+                  type: "text",
+                  label: "Regex Replacement",
+                  required: true,
+                  admin: {
+                    condition: (_, siblingData) =>
+                      siblingData.redactType === "regex",
+                    placeholder: "[REDACTED]",
+                  },
+                },
+              ],
+              admin: {
+                condition: (_, siblingData) => siblingData.redactionEnabled,
+              },
+            },
+          ],
+        },
+        {
+          label: "AI Parameters",
+          name: "params",
+          description:
+            "Configure additional parameters for the AI model. These parameters are passed directly to the AI and are not validated further by the API.",
+          fields: [
+            {
+              name: "temperature",
+              type: "number",
+              label: "Temperature",
+              required: false,
+              defaultValue: 0.1,
+              admin: {
+                description:
+                  "What sampling temperature to use. Higher values means the AI will take more risks and will generate less predictable text.",
+              },
+              max: 1,
+              min: 0,
+            },
+            {
+              name: "top_p",
+              type: "number",
+              label: "Top P",
+              min: 0,
+              max: 1,
+              required: false,
+              admin: {
+                description:
+                  "An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.",
+              },
+            },
+            {
+              name: "presence_penalty",
+              type: "number",
+              label: "Presence Penalty",
+              required: false,
+              defaultValue: 0,
+              admin: {
+                description:
+                  "The higher this value, the more likely the AI is to talk about something that was mentioned in the prompt.",
+              },
+              min: 0,
+              max: 1,
+            },
+            {
+              name: "frequency_penalty",
+              type: "number",
+              label: "Frequency Penalty",
+              required: false,
+              defaultValue: 0,
+              admin: {
+                description:
+                  "The higher this value, the less likely the AI is to repeat something it has said in the past.",
+              },
+              min: 0,
+              max: 1,
+            },
+            {
+              name: "logit_bias",
+              type: "json",
+              label: "Logit Bias",
+              required: false,
+              defaultValue: {},
+              admin: {
+                description:
+                  "A dictionary of logit bias values to use for the AI model.",
               },
             },
           ],

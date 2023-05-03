@@ -5,7 +5,6 @@ import Roles from "./collections/Roles";
 import ApiDocs from "./components/ApiDocs.js";
 import { Logo, Icon } from "./components/Graphics";
 import dotenv from "dotenv";
-// import formBuilder from "@payloadcms/plugin-form-builder";
 
 dotenv.config({
   path: path.resolve(__dirname, "../.env"),
