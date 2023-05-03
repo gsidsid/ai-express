@@ -47,6 +47,8 @@ If you have docker and docker-compose installed, you can run `docker compose up`
 
 ## Future
 
+Instead of having to stitch together 4-5 different services and open source repos, it'd be great if these were all out of the box here:
+
 Low-hanging fruit:
 
 - Optional in memory caching of LLM output based on exact prompt text
@@ -57,7 +59,7 @@ Requires vector DB:
 
 - Automatic “prompt splitting” into vector db and lookup if prompt is too long
 - Optional index of and lookup through all prior output for a particular endpoint
-- Separate tab where documents/urls/websites can be uploaded, extracted, and are automatically be drawn upon globally
+- Separate tab where documents/urls/websites can be uploaded, extracted, and can be automatically drawn upon globally
 
 Other:
 
