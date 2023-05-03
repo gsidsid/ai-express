@@ -51,7 +51,6 @@ Instead of having to stitch together 4-5 different services and open source repo
 
 Low-hanging fruit:
 
-- Optional in memory caching of LLM output based on exact prompt text
 - Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files (text/excel/json/pdf/websites)
 - Global values/snippets that can be pre-fetched and referenced across all prompts
 
