@@ -57,6 +57,10 @@ Requires vector DB:
 
 - Automatic “prompt splitting” into vector db and lookup if prompt is too long
 - Optional index of and lookup through all prior output for a particular endpoint
-- Separate tab where documents/urls/websites can be uploaded, extracted, and are automatically be drawn upon
+- Separate tab where documents/urls/websites can be uploaded, extracted, and are automatically be drawn upon globally
+
+Other:
+
+- VM mode where only Python or JS code is output, automatically executed, results are provided through JSON, after a prompt chain against any error messages until `max_retries`
 
 Contributions are welcome.
