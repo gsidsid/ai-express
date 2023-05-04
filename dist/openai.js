@@ -41,54 +41,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var payload_1 = __importDefault(require("payload"));
-var express_dynamic_middleware_1 = __importDefault(require("express-dynamic-middleware"));
 var openai_1 = require("openai");
 var util_1 = require("./util");
-var router = express_1.default.Router();
+var cache_1 = require("./cache");
+// Initialize OpenAI API client
 var configuration = new openai_1.Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 var openai = new openai_1.OpenAIApi(configuration);
-var rateLimitMiddlewareHandles = {};
+// Initialize the router
+var router = null;
 function setupDynamicRoutes() {
     return __awaiter(this, void 0, void 0, function () {
-        var routes, error_1;
+        var docs, error_1;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+                    // Create a new router and apply the API key middleware
+                    router = express_1.default.Router();
+                    router.use(util_1.apiKeyMiddleware);
                     return [4 /*yield*/, payload_1.default.find({ collection: "prompts" })];
                 case 1:
-                    routes = _a.sent();
-                    routes.docs.forEach(function (route) {
+                    docs = (_a.sent()).docs;
+                    // Iterate over each prompt and create a dynamic route
+                    docs === null || docs === void 0 ? void 0 : docs.forEach(function (route) {
+                        // Validate the route name
                         if (!route.name || typeof route.name !== "string") {
                             return;
                         }
-                        // Apply rate limiting middleware
-                        if (rateLimitMiddlewareHandles[(0, util_1.getRouteName)(route.name)]) {
-                            var _a = rateLimitMiddlewareHandles[(0, util_1.getRouteName)(route.name)], func = _a.func, dynamicRL = _a.dynamicRL;
-                            dynamicRL === null || dynamicRL === void 0 ? void 0 : dynamicRL.unuse(func);
-                            delete rateLimitMiddlewareHandles[(0, util_1.getRouteName)(route.name)];
-                        }
+                        // Apply rate limiting middleware if enabled
                         if (route.rateLimit.rateLimitEnabled) {
-                            rateLimitMiddlewareHandles[(0, util_1.getRouteName)(route.name)] = {
-                                func: (0, util_1.createRateLimiter)(route),
-                            };
-                            var dynamicRL = express_dynamic_middleware_1.default.create(rateLimitMiddlewareHandles[(0, util_1.getRouteName)(route.name)].func);
-                            rateLimitMiddlewareHandles[(0, util_1.getRouteName)(route.name)].handle = dynamicRL;
-                            router.use("/api/".concat((0, util_1.getRouteName)(route.name)), dynamicRL.handle());
+                            router.use("/api/".concat((0, util_1.getRouteName)(route.name)), (0, util_1.createRateLimiter)(route));
                         }
-                        router.post("/api/".concat((0, util_1.getRouteName)(route.name)), function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                            var model, prompt_1, systemMessage, variables, _i, variables_1, variable, variableValue, redactedVariableValue, retryCount, validationResult, result, messages, completion, correctionPrompt, error_2;
+                        // Define the route handler
+                        router.post("/api/".concat((0, util_1.getRouteName)(route.name)), function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+                            var cacheKey, cachedResult, model, prompt_1, params, systemMessage, variables, processedPrompt, _i, variables_1, variable, variableValue, redactedVariableValue, retryCount, validationResult, result, messages, completion, correctionPrompt, error_2;
                             var _a;
                             return __generator(this, function (_b) {
                                 switch (_b.label) {
                                     case 0:
                                         _b.trys.push([0, 14, , 15]);
-                                        model = route.model, prompt_1 = route.prompt;
+                                        cacheKey = "".concat(route.name, "-").concat(JSON.stringify(req.body));
+                                        // Check if caching is enabled and if the result is in the cache
+                                        if (route.caching.cachingEnabled) {
+                                            cachedResult = (0, cache_1.getFromCache)(cacheKey, route.caching.cacheTTL);
+                                            if (cachedResult) {
+                                                return [2 /*return*/, res
+                                                        .status(200)
+                                                        .json({ result: cachedResult.result, error: null })];
+                                            }
+                                        }
+                                        model = route.model, prompt_1 = route.prompt, params = route.params;
                                         systemMessage = route.role && (0, util_1.isRole)(route.role) ? route.role.value : null;
                                         variables = (0, util_1.inferVariablesFromPrompt)(prompt_1);
+                                        processedPrompt = prompt_1;
                                         _i = 0, variables_1 = variables;
                                         _b.label = 1;
                                     case 1:
@@ -96,7 +104,7 @@ function setupDynamicRoutes() {
                                         variable = variables_1[_i];
                                         variableValue = (0, util_1.stringify)(req.body[variable.name]);
                                         if (!(route.redaction.redactionEnabled && variableValue)) return [3 /*break*/, 3];
-                                        return [4 /*yield*/, (0, util_1.redactPII)(variableValue)];
+                                        return [4 /*yield*/, (0, util_1.redactPII)(route.redaction.redactionOptions, variableValue)];
                                     case 2:
                                         redactedVariableValue = _b.sent();
                                         if (route.redaction.redactionMode === "fail" &&
@@ -109,19 +117,18 @@ function setupDynamicRoutes() {
                                         variableValue = redactedVariableValue;
                                         return [3 /*break*/, 4];
                                     case 3:
-                                        variableValue = variableValue || variable.defaultValue;
+                                        variableValue = variableValue !== null && variableValue !== void 0 ? variableValue : variable.defaultValue;
                                         _b.label = 4;
                                     case 4:
-                                        if (!req.body[variable.name] &&
-                                            variable.defaultValue === undefined) {
+                                        // Validate the presence of required parameters
+                                        if (variableValue === undefined) {
                                             return [2 /*return*/, res.status(400).json({
                                                     result: null,
                                                     error: "Missing required parameter ".concat(variable.name, " in POST body"),
                                                 })];
                                         }
-                                        else {
-                                            prompt_1 = (0, util_1.replaceVariable)(prompt_1, variable.name, variableValue);
-                                        }
+                                        // Replace variables in the prompt with their values
+                                        processedPrompt = (0, util_1.replaceVariable)(processedPrompt, variable.name, variableValue);
                                         _b.label = 5;
                                     case 5:
                                         _i++;
@@ -131,21 +138,23 @@ function setupDynamicRoutes() {
                                         validationResult = { valid: false, errorMessage: null };
                                         result = null;
                                         messages = [];
+                                        // Add system message to the conversation if present
                                         if (systemMessage) {
-                                            messages.push({
-                                                role: "system",
-                                                content: systemMessage,
-                                            });
+                                            messages.push({ role: "system", content: systemMessage });
                                         }
-                                        messages.push({
-                                            role: "user",
-                                            content: prompt_1,
-                                        });
-                                        payload_1.default.logger.info("Submitting prompt: ".concat(prompt_1));
+                                        // Add user message to the conversation
+                                        messages.push({ role: "user", content: processedPrompt });
+                                        // Log the submitted prompt
+                                        payload_1.default.logger.info("Submitting prompt: ".concat(processedPrompt));
                                         _b.label = 7;
                                     case 7: return [4 /*yield*/, openai.createChatCompletion({
                                             model: model,
                                             messages: messages,
+                                            temperature: params === null || params === void 0 ? void 0 : params.temperature,
+                                            top_p: params === null || params === void 0 ? void 0 : params.top_p,
+                                            presence_penalty: params === null || params === void 0 ? void 0 : params.presence_penalty,
+                                            frequency_penalty: params === null || params === void 0 ? void 0 : params.frequency_penalty,
+                                            logit_bias: (params === null || params === void 0 ? void 0 : params.logit_bias) && typeof params.logit_bias === "object" && Object.keys(params.logit_bias).length > 0 ? params.logit_bias : undefined,
                                         })];
                                     case 8:
                                         completion = _b.sent();
@@ -157,20 +166,14 @@ function setupDynamicRoutes() {
                                         if (validationResult.valid)
                                             return [3 /*break*/, 13];
                                         correctionPrompt = [
-                                            {
-                                                role: "assistant",
-                                                content: result,
-                                            },
-                                            {
-                                                role: "user",
-                                                content: validationResult.errorMessage,
-                                            },
+                                            { role: "assistant", content: result },
+                                            { role: "user", content: validationResult.errorMessage },
                                         ];
                                         if (messages.length <= 2) {
                                             messages = messages.concat(correctionPrompt);
                                         }
                                         else {
-                                            // Replace the last two messages instead of appending each retry to minimize context usage
+                                            // Replace the last two messages to minimize context usage
                                             messages[messages.length - 2] = correctionPrompt[0];
                                             messages[messages.length - 1] = correctionPrompt[1];
                                         }
@@ -179,17 +182,26 @@ function setupDynamicRoutes() {
                                         validationResult.valid = true;
                                         return [3 /*break*/, 13];
                                     case 11:
+                                        // Raise the temperature slightly on each retry
+                                        if ((params === null || params === void 0 ? void 0 : params.temperature) && typeof params.temperature === "number") {
+                                            params.temperature = Math.min(params.temperature + 0.05, 1);
+                                        }
                                         retryCount++;
                                         _b.label = 12;
                                     case 12:
                                         if (retryCount <= route.validation.maxRetries) return [3 /*break*/, 7];
                                         _b.label = 13;
                                     case 13:
+                                        // Handle validation failure
                                         if (!validationResult.valid) {
                                             return [2 /*return*/, res.status(400).json({
                                                     result: null,
-                                                    error: "Validation failed after ".concat(retryCount, " retries: ").concat(validationResult.errorMessage),
+                                                    error: "Validation failed after ".concat(retryCount, " tries: ").concat(validationResult.errorMessage),
                                                 })];
+                                        }
+                                        // Store the result in the cache if caching is enabled
+                                        if (route.caching.cachingEnabled) {
+                                            (0, cache_1.addToCache)(cacheKey, { result: result, timestamp: Date.now() });
                                         }
                                         res.status(200).json({ result: result, error: null });
                                         return [3 /*break*/, 15];
@@ -213,5 +225,7 @@ function setupDynamicRoutes() {
         });
     });
 }
-router.use(util_1.apiKeyMiddleware);
-exports.default = { router: router, setupDynamicRoutes: setupDynamicRoutes };
+function getRouter() {
+    return router;
+}
+exports.default = { setupDynamicRoutes: setupDynamicRoutes, getRouter: getRouter };

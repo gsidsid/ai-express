@@ -21,7 +21,6 @@ var Roles_1 = __importDefault(require("./collections/Roles"));
 var ApiDocs_js_1 = __importDefault(require("./components/ApiDocs.js"));
 var Graphics_1 = require("./components/Graphics");
 var dotenv_1 = __importDefault(require("dotenv"));
-// import formBuilder from "@payloadcms/plugin-form-builder";
 dotenv_1.default.config({
     path: path_1.default.resolve(__dirname, "../.env"),
 });
@@ -43,6 +42,7 @@ exports.default = (0, config_1.buildConfig)({
         admin: "/admin",
     },
     admin: {
+        avatar: "gravatar",
         components: {
             graphics: {
                 Logo: Graphics_1.Logo,

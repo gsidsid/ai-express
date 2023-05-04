@@ -27,13 +27,30 @@ var react_1 = __importStar(require("react"));
 var react_2 = require("react");
 if (!process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY)
     throw new Error("AI Express API key not found. Please set the PAYLOAD_PUBLIC_AIEXPRESS_API_KEY environment variable.");
-var apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
 var Docs;
 var ApiDocs = function () {
     var _a = (0, react_1.useState)(false), copied = _a[0], setCopied = _a[1];
+    var apiKey = process.env.PAYLOAD_PUBLIC_AIEXPRESS_API_KEY;
     Docs = Docs || (0, react_2.lazy)(function () { return Promise.resolve().then(function () { return __importStar(require("./Swagger.js")); }); });
     var copyToClipboard = function (e) {
-        navigator.clipboard.writeText(apiKey);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(apiKey);
+        }
+        else {
+            // http fallback
+            var textArea = document.createElement("textarea");
+            textArea.value = apiKey;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand("copy");
+            }
+            catch (err) {
+                console.error("Unable to copy to clipboard", err);
+            }
+            document.body.removeChild(textArea);
+        }
         setCopied(true);
         setTimeout(function () {
             setCopied(false);

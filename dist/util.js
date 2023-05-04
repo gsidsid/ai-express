@@ -41,26 +41,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceVariable = exports.validateOutput = exports.redactPII = exports.createRateLimiter = exports.countTokens = exports.getRouteName = exports.generateSwaggerSpec = exports.apiKeyMiddleware = exports.isRole = exports.stringify = exports.inferVariablesFromPrompt = void 0;
 var express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+var payload_1 = __importDefault(require("payload"));
 var redact_pii_1 = require("redact-pii");
 var safe_eval_1 = __importDefault(require("safe-eval"));
 var serverURL = process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME
     ? "https://".concat(process.env.PAYLOAD_PUBLIC_EXTERNAL_HOSTNAME)
     : "http://0.0.0.0:".concat(process.env.PAYLOAD_PUBLIC_PORT || 3000);
-var mongoURL = process.env.PAYLOAD_PUBLIC_MONGODB_URI || "mongodb://0.0.0.0/payload";
-function getMongoDBDetails() {
-    var connectionString = mongoURL;
-    var regex = /^mongodb(?:\+srv)?:\/\/([^:]+):([^@]+)@(.+)$/;
-    var match = connectionString.match(regex);
-    if (match) {
-        var user = match[1];
-        var password = match[2];
-        var uri = "mongodb+srv://".concat(match[3]);
-        return { user: user, password: password, uri: uri };
-    }
-    else {
-        throw new Error("Invalid MongoDB connection string");
-    }
-}
 /**
  * Infers variables from a text prompt in the format {{variableName}}, with optional description and default value.
  * The description and default value can be added in the format {{variableName|defaultValue|description}}.
@@ -124,7 +110,9 @@ var apiKeyMiddleware = function (req, res, next) {
     var apiKey = req.headers["x-api-key"];
     if (process.env.AIEXPRESS_API_KEY &&
         (!apiKey || apiKey !== process.env.AIEXPRESS_API_KEY)) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({
+            message: "Unauthorized. Make sure to include the correct x-api-key header in your request.",
+        });
     }
     next();
 };
@@ -271,13 +259,64 @@ var createRateLimiter = function (route) {
     });
 };
 exports.createRateLimiter = createRateLimiter;
+function createRedactor(options) {
+    var customRedactors = options.map(function (option) {
+        if (option.redactType === "regex") {
+            return {
+                regexpPattern: new RegExp(option.regexValue, "gi"),
+                replaceWith: option.regexReplacement,
+            };
+        }
+        return null;
+    });
+    // Unique types for built-in redactors
+    var uniqueRedactTypes = Array.from(new Set(options.map(function (option) { return option.redactType; })));
+    var allBuiltInRedactors = [
+        "emailAddress",
+        "phoneNumber",
+        "creditCardNumber",
+        "ipAddress",
+        "names",
+        "streetAddress",
+        "zipcode",
+        "url",
+        "digits",
+        "username",
+        "password",
+        "credentials",
+        "usSocialSecurityNumber",
+    ];
+    var builtInRedactors = uniqueRedactTypes
+        .filter(function (redactType) { return redactType !== "regex"; })
+        .reduce(function (accumulator, redactType) {
+        accumulator[redactType] = {
+            enabled: true,
+        };
+        return accumulator;
+    }, {});
+    // Disable redactors not included in the list
+    allBuiltInRedactors.forEach(function (redactor) {
+        if (!builtInRedactors.hasOwnProperty(redactor)) {
+            builtInRedactors[redactor] = {
+                enabled: false,
+            };
+        }
+    });
+    var redactor = new redact_pii_1.AsyncRedactor({
+        customRedactors: {
+            before: customRedactors.filter(function (redactor) { return redactor !== null; }),
+        },
+        builtInRedactors: builtInRedactors,
+    });
+    return redactor;
+}
 // Helper function for PII redaction
-var redactPII = function (text) { return __awaiter(void 0, void 0, void 0, function () {
+var redactPII = function (options, text) { return __awaiter(void 0, void 0, void 0, function () {
     var redactor;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                redactor = new redact_pii_1.AsyncRedactor();
+                redactor = createRedactor(options);
                 return [4 /*yield*/, redactor.redactAsync(text)];
             case 1: return [2 /*return*/, _a.sent()];
         }
@@ -291,9 +330,13 @@ var validateOutput = function (validationFunction, result) {
         return { valid: true, errorMessage: null };
     }
     else if (typeof validationResult === "string") {
+        payload_1.default.logger.info("Result: ".concat(result));
+        payload_1.default.logger.info("Error: ".concat(JSON.stringify(validationResult)));
         return { valid: false, errorMessage: validationResult };
     }
     else if (validationResult === false) {
+        payload_1.default.logger.info("Result: ".concat(result));
+        payload_1.default.logger.info("Error: \"Invalid output. Please try again.\"");
         return { valid: false, errorMessage: "Invalid output. Please try again." };
     }
     else {
