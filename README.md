@@ -2,7 +2,7 @@
 
 A fast way to turn AI prompts into ready-to-use API endpoints– deploy with a few clicks and manage prompts with automated variable inference & substitution in a neat visual interface. Comes out of the box with configurable input redaction, output validation, prompt retry, rate limiting & output caching infrastructure with no additional setup.
 
-Run locally, or deploy in one click using the button below. If you are deploying AI Express for production use, make sure to customize the AIEXPRESS_API_KEY environment variable with a new random value that you keep secret.
+Run locally, or deploy in one click using the button below. If you are deploying AI Express for production use, make sure to customize the `AIEXPRESS_API_KEY` environment variable with a new random value that you keep secret.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/NVhiVe?referralCode=4GE3Xc)
 
@@ -51,7 +51,6 @@ Instead of having to stitch together 4-5 different services and open source repo
 
 Low-hanging fruit:
 
-- Optional in memory caching of LLM output based on exact prompt text
 - Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files (text/excel/json/pdf/websites)
 - Global values/snippets that can be pre-fetched and referenced across all prompts
 
@@ -60,9 +59,5 @@ Requires vector DB:
 - Automatic “prompt splitting” into vector db and lookup if prompt is too long
 - Optional index of and lookup through all prior output for a particular endpoint
 - Separate tab where documents/urls/websites can be uploaded, extracted, and can be automatically drawn upon globally
-
-Other:
-
-- VM mode where only Python or JS code is output, automatically executed in a sandbox, results are provided through JSON, after a prompt chain against any error messages until `max_retries`
 
 Contributions are welcome.
