@@ -23,7 +23,7 @@ Then set your connection URL as the `MONGODB_URI` environment variable wherever 
 
 ## Usage
 
-This template uses a simple express server with a Payload CMS configuration to give you a neat interface to manage prompts, updating your API dynamically whenever you publish/modify prompts on it.
+This template uses a simple express server with a Payload CMS configuration to give you an interface to manage prompts, updating your API dynamically whenever you publish/modify prompts on it.
 
 ![Dashboard](src/assets/readme-editor.png)
 
@@ -46,10 +46,6 @@ The API will wait for and output the top chat completion `completion.data.choice
 If you have docker and docker-compose installed, you can run `docker compose up`. You may need to run `sudo chmod -R go+w /data/db` on the data/db directory first.
 
 ## Future
-
-Instead of having to stitch together 4-5 different services and open source repos, it'd be great if these were all out of the box here:
-
-Low-hanging fruit:
 
 - Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files (text/excel/json/pdf/websites)
 - Global values/snippets that can be pre-fetched and referenced across all prompts
