@@ -47,6 +47,7 @@ If you have docker and docker-compose installed, you can run `docker compose up`
 
 ## Future
 
+- Generate test data and preview groups of completions
 - Prebuilt and configurable processors that extract text when the endpoint is provided with URL's to files (text/excel/json/pdf/websites)
 - Global values/snippets that can be pre-fetched and referenced across all prompts
 
