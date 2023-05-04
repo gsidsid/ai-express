@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "yarn && yarn build"
+buildCommand = "yarn install --no-optional && yarn build"
 
 [deploy]
 startCommand = "yarn serve"
